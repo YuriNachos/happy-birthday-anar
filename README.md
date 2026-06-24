@@ -1,14 +1,11 @@
-# 🔥 Happy Birthday, Anar
+# 🌃 Happy Birthday, Anar — Gecə
 
-4 одно-страничных скролл-привітання для Анара — выбери свою вселенную.
+Одностраничный неоновый скролл-сайт ко дню рождения Анара (30) — ночная прогулка **Баку → Вьетнам**:
+IcePub, кальянный лаунж, сигара, сауна, тропики, рассвет. Внутри спрятана мини-игра **Anar Quest**
+(Konami: ↑ ↑ ↓ ↓ ← → ← → B A — или кнопка 🎮).
 
-- **/v1-odlar-yurdu/** — Odlar Yurdu · Земля Огня (азерб. наследие + живой огонь)
-- **/v2-shef-anar/** — Şef Anar · дегустационное меню (кинематографичный fine-dining)
-- **/v3-gece-night/** — Gecə · ночной неон (прогулка Баку → Бангкок, ожившая вывеска IcePub)
-- **/v4-smoke-embers/** — Tüstü · Smoke & Embers (кальянно-сигарный лаунж)
+Live: https://yurinachos.github.io/happy-birthday-anar/
 
-В каждом спрятан **Anar Quest** — мини-игра, открывается по Konami-коду (↑↑↓↓←→←→ B A) или кнопкой 🎮.
+Tech: vanilla HTML/CSS/JS + GSAP ScrollTrigger + Canvas 2D. Single-file, без сборщиков. Деплой — GitHub Pages.
 
-Tech: vanilla HTML/CSS/JS + GSAP ScrollTrigger + Canvas 2D. Без сборщиков. Деплой — GitHub Pages.
-
-Язык: русский с азербайджанскими вкраплениями. Сделано Юрой.
+Сделано Юрой.
