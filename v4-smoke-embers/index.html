@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tüstü · Smoke & Embers — Лаунж имени Анара</title>
+<meta name="description" content="Smoke & Embers — лаунж имени Анара. Только по приглашению. Ad günün mübarək!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a14;
+    --bg2:#1a1320;
+    --gold:#d4af37;
+    --gold-soft:#e8c977;
+    --bordo:#7a1f2b;
+    --ash:#e8e6df;
+    --ashdim:rgba(232,230,223,.55);
+    --ashfaint:rgba(232,230,223,.34);
+    --emerald:#13564c;
+    --ember:#ff7a3c;
+    --glass:rgba(28,22,34,.46);
+    --glass-brd:rgba(212,175,55,.22);
+    --maxw:1180px;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --sans:'Manrope',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ash);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.65;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    cursor:auto;
+  }
+
+  /* page vignette + warm radial glows */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(212,175,55,.10), transparent 55%),
+      radial-gradient(90% 70% at 85% 30%, rgba(122,31,43,.16), transparent 60%),
+      radial-gradient(80% 70% at 12% 78%, rgba(19,86,76,.12), transparent 62%),
+      radial-gradient(120% 120% at 50% 50%, transparent 52%, rgba(0,0,0,.72) 100%);
+  }
+  /* subtle film grain */
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:3;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* smoke canvas — behind everything */
+  #smoke{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    pointer-events:none;
+    will-change:transform;
+  }
+
+  /* layout */
+  main{position:relative;z-index:4;}
+  section{
+    position:relative;
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:clamp(72px,12vh,150px) clamp(20px,5vw,56px);
+  }
+  .wide{max-width:100%;}
+
+  /* ===== cigar progress (top fixed bar) ===== */
+  #cigar{
+    position:fixed;
+    top:0;left:0;
+    width:100%;
+    height:9px;
+    z-index:60;
+    pointer-events:none;
+  }
+  /* unburnt cigar body */
+  #cigar .body{
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.18)),
+      repeating-linear-gradient(90deg,#5a3a26 0,#6b4630 7px,#4d3120 14px);
+    border-bottom:1px solid rgba(0,0,0,.5);
+  }
+  /* burnt ash, grows with scroll */
+  #cigar .ash{
+    position:absolute;
+    top:0;left:0;height:100%;
+    width:0%;
+    background:
+      linear-gradient(180deg,#d9d2c7,#9c958a 60%,#6d675e);
+    box-shadow:inset 0 0 6px rgba(0,0,0,.35);
+  }
+  /* glowing ember at the burning edge */
+  #cigar .ember{
+    position:absolute;
+    top:50%;
+    left:0%;
+    width:18px;height:18px;
+    margin:-9px 0 0 -9px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ffd27a 0%,#ff7a1c 38%,#c22e0e 70%,transparent 78%);
+    box-shadow:0 0 14px 4px rgba(255,120,30,.75),0 0 28px 10px rgba(255,80,20,.35);
+  }
+
+  /* ===== nav: back to menu + brand ===== */
+  .nav-back{
+    position:fixed;
+    top:20px;left:18px;
+    z-index:70;
+    display:inline-flex;
+    align-items:center;
+    gap:.4em;
+    min-height:44px;
+    padding:9px 16px;
+    border-radius:999px;
+    text-decoration:none;
+    font:600 13px/1 var(--sans);
+    letter-spacing:.04em;
+    color:var(--ash);
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:transform .25s ease,color .25s ease,border-color .25s ease;
+  }
+  .nav-back:hover{color:var(--gold);border-color:rgba(212,175,55,.5);transform:translateX(-3px);}
+
+  /* ===== hero ===== */
+  .hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    max-width:none;
+    padding-left:clamp(20px,5vw,56px);
+    padding-right:clamp(20px,5vw,56px);
+  }
+  .hero .invite{
+    font-family:var(--mono);
+    font-size:clamp(10px,2.6vw,13px);
+    letter-spacing:.42em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 clamp(18px,4vh,34px);
+    padding-left:.42em;
+    opacity:.86;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(64px,20vw,220px);
+    line-height:.9;
+    margin:0;
+    letter-spacing:-.01em;
+    color:var(--ash);
+    text-shadow:
+      0 0 30px rgba(212,175,55,.30),
+      0 0 70px rgba(255,120,30,.18),
+      0 4px 40px rgba(0,0,0,.6);
+    will-change:transform;
+  }
+  .hero h1 .dot{color:var(--gold);}
+  .hero .sub{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(22px,5vw,44px);
+    color:var(--gold-soft);
+    margin:clamp(8px,2vh,18px) 0 0;
+    letter-spacing:.02em;
+  }
+  .hero .tagline{
+    font-size:clamp(13px,3.4vw,18px);
+    color:var(--ashdim);
+    margin:clamp(18px,4vh,30px) 0 0;
+    max-width:34ch;
+    letter-spacing:.02em;
+  }
+  .hero .tagline b{color:var(--ash);font-weight:600;}
+  .scroll-hint{
+    margin-top:clamp(34px,7vh,64px);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ashfaint);
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .scroll-hint .arrow{
+    font-size:18px;
+    color:var(--gold);
+    animation:bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(8px);opacity:1;}}
+
+  /* ===== section heads ===== */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:34px;height:1px;
+    background:linear-gradient(90deg,var(--gold),transparent);
+  }
+  h2.sec-title{
+    font-family:var(--serif);
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(32px,7vw,68px);
+    line-height:1.05;
+    margin:0 0 24px;
+    color:var(--ash);
+    letter-spacing:-.01em;
+  }
+  .lead{
+    font-size:clamp(16px,2.4vw,21px);
+    color:var(--ashdim);
+    max-width:60ch;
+    line-height:1.7;
+  }
+  .lead b{color:var(--ash);font-weight:600;}
+  .lead .az{color:var(--gold-soft);font-style:italic;font-family:var(--serif);font-size:1.12em;}
+
+  /* ===== intro panel ===== */
+  .intro{max-width:840px;}
+  .intro .panel{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:20px;
+    padding:clamp(28px,5vw,52px);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 80px -40px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .intro .panel p{
+    font-family:var(--serif);
+    font-size:clamp(20px,3.6vw,30px);
+    line-height:1.6;
+    color:var(--ash);
+    margin:0;
+    font-weight:400;
+  }
+  .intro .panel p .glow{color:var(--gold-soft);font-style:italic;}
+
+  /* ===== toasts ===== */
+  .toasts-head{text-align:center;max-width:none;}
+  .toasts-head .eyebrow{justify-content:center;}
+  .toasts-head .eyebrow::before{display:none;}
+  .toast-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:clamp(16px,2.4vw,26px);
+    max-width:var(--maxw);
+    margin-inline:auto;
+  }
+  .toast{
+    position:relative;
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:18px;
+    padding:clamp(24px,3.4vw,38px);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    overflow:hidden;
+    box-shadow:0 24px 60px -38px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.04);
+    transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s ease;
+  }
+  .toast::before{
+    content:"";
+    position:absolute;
+    top:-40%;right:-30%;
+    width:60%;height:120%;
+    background:radial-gradient(circle, rgba(212,175,55,.12), transparent 70%);
+    pointer-events:none;
+  }
+  .toast:hover{transform:translateY(-5px);border-color:rgba(212,175,55,.46);}
+  .toast .num{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(40px,6vw,68px);
+    line-height:1;
+    color:var(--gold);
+    opacity:.9;
+    margin-bottom:6px;
+    display:block;
+    text-shadow:0 0 26px rgba(212,175,55,.3);
+  }
+  .toast h3{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+    margin:0 0 14px;
+    font-weight:500;
+  }
+  .toast p{
+    margin:0;
+    font-size:clamp(15px,2.1vw,18px);
+    line-height:1.66;
+    color:var(--ashdim);
+  }
+  .toast p .em{color:var(--ash);}
+
+  /* ===== big quote ===== */
+  .quote-sec{text-align:center;}
+  .quote-card{
+    max-width:760px;
+    margin:0 auto;
+    background:linear-gradient(135deg, rgba(122,31,43,.18), var(--glass));
+    border:1px solid var(--glass-brd);
+    border-radius:24px;
+    padding:clamp(34px,6vw,72px) clamp(26px,5vw,60px);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    position:relative;
+    box-shadow:0 36px 90px -44px rgba(0,0,0,.85);
+  }
+  .quote-card .mark{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(70px,16vw,140px);
+    line-height:.6;
+    color:var(--gold);
+    opacity:.34;
+    display:block;
+    height:.5em;
+  }
+  .quote-card blockquote{
+    margin:0;
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(22px,4.4vw,40px);
+    line-height:1.42;
+    color:var(--ash);
+  }
+  .quote-card cite{
+    display:block;
+    margin-top:clamp(18px,4vw,32px);
+    font-family:var(--mono);
+    font-style:normal;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--gold-soft);
+  }
+
+  /* ===== breathing (3 full screens, scrub) ===== */
+  #breath{position:relative;z-index:4;}
+  .breath-screen{
+    height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+  .breath-screen .word{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(44px,13vw,140px);
+    color:var(--ash);
+    text-shadow:0 0 60px rgba(212,175,55,.4),0 0 120px rgba(255,120,30,.18);
+    will-change:transform,opacity;
+  }
+  .breath-screen .word.final{color:var(--gold);}
+  .breath-orb{
+    position:absolute;
+    top:50%;left:50%;
+    width:min(70vw,560px);
+    aspect-ratio:1;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(212,175,55,.20), rgba(255,120,30,.06) 45%, transparent 68%);
+    pointer-events:none;
+    will-change:transform;
+    z-index:-1;
+  }
+
+  /* ===== three sanctities ===== */
+  .shrine-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:clamp(16px,2.4vw,26px);
+  }
+  .shrine{
+    text-align:center;
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:18px;
+    padding:clamp(28px,4vw,44px) clamp(20px,3vw,30px);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    transition:transform .4s ease,border-color .4s ease;
+  }
+  .shrine:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.46);}
+  .shrine .icon{
+    font-size:clamp(38px,6vw,54px);
+    display:block;
+    margin-bottom:16px;
+    filter:drop-shadow(0 0 18px rgba(212,175,55,.4));
+  }
+  .shrine h3{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(24px,4vw,34px);
+    margin:0 0 12px;
+    color:var(--gold-soft);
+    font-weight:500;
+  }
+  .shrine p{
+    margin:0;
+    font-size:clamp(14px,2vw,17px);
+    color:var(--ashdim);
+    line-height:1.6;
+  }
+
+  /* ===== portrait (intro / décor) ===== */
+  .portrait-wrap{
+    display:grid;
+    grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+    gap:clamp(28px,5vw,64px);
+    align-items:center;
+  }
+  .portrait{
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    aspect-ratio:1290/1607;
+    background:
+      radial-gradient(circle at 50% 30%, rgba(122,31,43,.5), var(--bg2));
+    border:1px solid var(--glass-brd);
+    box-shadow:0 40px 100px -50px rgba(0,0,0,.9);
+  }
+  .portrait img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .portrait::after{
+    content:"";
+    position:absolute;inset:0;
+    pointer-events:none;
+    box-shadow:inset 0 0 90px rgba(255,120,30,.22),inset 0 0 30px rgba(0,0,0,.5);
+    background:linear-gradient(180deg,transparent 55%,rgba(10,10,20,.55));
+  }
+  .portrait .fallback{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:84px;
+    opacity:.5;
+  }
+
+  /* ===== finale ===== */
+  .finale{
+    position:relative;
+    z-index:4;
+    text-align:center;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    max-width:none;
+  }
+  .finale h2{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(34px,9vw,108px);
+    line-height:1.02;
+    margin:0;
+    color:var(--ash);
+    text-shadow:0 0 40px rgba(212,175,55,.34),0 0 100px rgba(255,120,30,.2);
+  }
+  .finale .cox{color:var(--gold);display:block;margin-top:.12em;}
+  .finale .age-line{
+    margin-top:clamp(22px,5vh,40px);
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(18px,3.4vw,28px);
+    color:var(--gold-soft);
+    max-width:40ch;
+  }
+  .finale .age-line .num{
+    color:var(--gold);
+    font-weight:600;
+    font-style:normal;
+  }
+  #ember-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:-1;
+  }
+
+  /* ===== footer ===== */
+  footer{
+    position:relative;
+    z-index:4;
+    text-align:center;
+    padding:clamp(40px,8vh,72px) 24px clamp(50px,9vh,90px);
+    border-top:1px solid rgba(212,175,55,.14);
+  }
+  footer .sig{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(18px,3vw,26px);
+    color:var(--ash);
+    margin:0 0 10px;
+  }
+  footer .sig .gold{color:var(--gold);}
+  footer .meta{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ashfaint);
+    margin:0;
+  }
+  footer .az{color:var(--gold-soft);font-style:italic;font-family:var(--serif);text-transform:none;letter-spacing:0;font-size:15px;}
+
+  /* ===== ember cursor (desktop only) ===== */
+  .ember-cursor{
+    position:fixed;
+    top:0;left:0;
+    width:14px;height:14px;
+    margin:-7px 0 0 -7px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ffd27a,#ff7a1c 45%,#c22e0e 75%,transparent 80%);
+    box-shadow:0 0 12px 3px rgba(255,120,30,.7);
+    pointer-events:none;
+    z-index:9999;
+    opacity:0;
+    transition:opacity .3s ease;
+    will-change:transform;
+    display:none;
+  }
+
+  /* ===== reveal (default state; gsap animates) ===== */
+  .reveal{opacity:0;transform:translateY(34px);}
+  .gsap-off .reveal{opacity:1;transform:none;}
+
+  /* ===== responsive ===== */
+  @media (min-width:721px){
+    body.has-ember,body.has-ember a,body.has-ember button{cursor:none;}
+    .ember-cursor{display:block;}
+  }
+  @media (max-width:760px){
+    .toast-grid{grid-template-columns:1fr;}
+    .shrine-grid{grid-template-columns:1fr;}
+    .portrait-wrap{grid-template-columns:1fr;}
+    .portrait{max-width:380px;margin:0 auto;}
+  }
+  @media (max-width:540px){
+    section{padding-top:clamp(56px,10vh,90px);padding-bottom:clamp(56px,10vh,90px);}
+    .hero h1{font-size:clamp(58px,24vw,120px);}
+    .nav-back{padding:8px 13px;font-size:12px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1 !important;transform:none !important;}
+    .scroll-hint .arrow{animation:none;}
+    #smoke{opacity:.4;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- smoke background -->
+  <canvas id="smoke" aria-hidden="true"></canvas>
+
+  <!-- cigar progress -->
+  <div id="cigar" aria-hidden="true">
+    <div class="body"></div>
+    <div class="ash"></div>
+    <div class="ember"></div>
+  </div>
+
+  <!-- nav -->
+  <a class="nav-back" href="../">← меню</a>
+
+  <!-- ember cursor -->
+  <div class="ember-cursor" id="emberCursor" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- 1. HERO -->
+    <header class="hero">
+      <p class="invite">Лаунж имени Анара · только по приглашению</p>
+      <h1>Tüstü<span class="dot">.</span></h1>
+      <p class="sub">Smoke &amp; Embers</p>
+      <p class="tagline">Дым, угли и девять тостов. <b>Заходи — здесь время идёт со скоростью дыма.</b></p>
+      <div class="scroll-hint">
+        <span>вход с дымом, не спеша</span>
+        <span class="arrow">↓</span>
+      </div>
+    </header>
+
+    <!-- 2. INTRO -->
+    <section class="intro">
+      <p class="eyebrow reveal">Çayxana · вход</p>
+      <div class="panel reveal">
+        <p>Где-то в Баку есть лаунж, который открывается ровно раз в год — <span class="glow">в день рождения Анара</span>. Кожаные кресла, тёплый свет, армуду с чаем на столике, чаша уже забита твоим любимым. Заходи. Здесь время идёт со скоростью дыма.</p>
+      </div>
+    </section>
+
+    <!-- 3. TOASTS -->
+    <section class="toasts-head">
+      <p class="eyebrow reveal">tamada · слово ведущему</p>
+      <h2 class="sec-title reveal">Девять тостов</h2>
+      <p class="lead reveal" style="margin:0 auto;text-align:center;">Каждый — про тебя. Поднимаем не спеша, как и положено в этом лаунже.</p>
+    </section>
+    <section style="padding-top:clamp(20px,4vh,40px);">
+      <div class="toast-grid">
+
+        <article class="toast reveal">
+          <span class="num">I</span>
+          <h3>о казане</h3>
+          <p>Кто <span class="em">готовит на огне не спеша</span> — тот понимает жизнь. Хороший плов, как хороший год, не терпит торопыг.</p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">II</span>
+          <h3>о дыме</h3>
+          <p>Дым не прячет проблемы. Он просто <span class="em">делает их мягче</span> — как добрый разговор за полночь.</p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">III</span>
+          <h3>о сигаре</h3>
+          <p>Сигару нельзя докурить на бегу. Поэтому она и учит: <span class="em">важное — только не торопясь.</span></p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">IV</span>
+          <h3>о ночи</h3>
+          <p>Лучшие мысли приходят, когда город спит. Ты это знаешь — <span class="em">гуляешь, когда другие гасят свет.</span></p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">V</span>
+          <h3>о госте</h3>
+          <p>По-азербайджански гость — от Бога. <span class="em">У тебя за столом это чувствует каждый.</span></p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">VI</span>
+          <h3>о чае</h3>
+          <p>Армуду не наполняют до краёв — чтобы было удобно держать. <span class="em">Оставляй и в жизни немного места</span>: для друзей, для дыма, для тишины.</p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">VII</span>
+          <h3>о жаре</h3>
+          <p>Сауна напоминает: иногда надо <span class="em">сгореть дотла, чтобы выйти новым.</span></p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">VIII</span>
+          <h3>о дороге</h3>
+          <p>Баку, Бангкок, Бали… Дом — там, где тебя ждут с чаем. <span class="em">И ты возишь этот дом с собой.</span></p>
+        </article>
+
+        <article class="toast reveal">
+          <span class="num">IX</span>
+          <h3>о возрасте</h3>
+          <p><span class="em" id="toast-age">…</span> — это не годы. Это выдержка. <span class="em">Как у хорошей сигары и хорошего человека.</span></p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- portrait interlude -->
+    <section>
+      <div class="portrait-wrap">
+        <div class="portrait reveal">
+          <img src="../assets/anar.jpg" alt="Анар" loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="fallback" style="display:none;" aria-hidden="true">🧔</div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow">хозяин лаунжа</p>
+          <h2 class="sec-title">За этим столом</h2>
+          <p class="lead">Красная куртка, снежные горы за спиной — и тот самый взгляд человека, который сейчас тебе что-то расскажет, а потом накормит. <b>Огонь, гранат, тепло</b> — всё это про тебя ещё до того, как ты зажёг первый уголёк. <span class="az">Nuş olsun</span> — и пусть чаша не гаснет.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. QUOTE -->
+    <section class="quote-sec">
+      <p class="eyebrow reveal" style="justify-content:center;">memorable</p>
+      <div class="quote-card reveal">
+        <span class="mark">&ldquo;</span>
+        <blockquote>Если у тишины есть вкус — то он с дымком, кардамоном и капелькой граната.</blockquote>
+        <cite>— Анар, вероятно.</cite>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5. BREATHING (3 full screens, scrub) -->
+  <div id="breath">
+    <div class="breath-orb" aria-hidden="true"></div>
+    <section class="breath-screen wide"><span class="word" data-breath>вдох…</span></section>
+    <section class="breath-screen wide"><span class="word" data-breath>выдох…</span></section>
+    <section class="breath-screen wide"><span class="word final" data-breath id="breath-age">… лет</span></section>
+  </div>
+
+  <main>
+    <!-- 6. THREE SANCTITIES -->
+    <section>
+      <p class="eyebrow reveal">üç müqəddəs · три святыни</p>
+      <h2 class="sec-title reveal">Что нужно для счастья</h2>
+      <div class="shrine-grid" style="margin-top:clamp(20px,4vh,40px);">
+        <article class="shrine reveal">
+          <span class="icon" aria-hidden="true">💨</span>
+          <h3>Кальян</h3>
+          <p>Дым знает дорогу домой — просто иди за ним.</p>
+        </article>
+        <article class="shrine reveal">
+          <span class="icon" aria-hidden="true">🚬</span>
+          <h3>Сигара</h3>
+          <p>Хорошее не измеряют в затяжках.</p>
+        </article>
+        <article class="shrine reveal">
+          <span class="icon" aria-hidden="true">☕</span>
+          <h3>Çayxana</h3>
+          <p>Чай, друзья и время — больше ничего не нужно.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- 7. FINALE -->
+  <section class="finale">
+    <canvas id="ember-canvas" aria-hidden="true"></canvas>
+    <h2 class="reveal">Ad günün mübarək, Анар!<span class="cox">Çox yaşa!</span></h2>
+    <p class="age-line reveal"><span class="num" id="finale-age">…</span> — и пусть чаша не гаснет. Гори, но не сгорай.</p>
+  </section>
+
+  <!-- 8. FOOTER -->
+  <footer>
+    <p class="sig">сделано <span class="gold">Юрой</span> · для <span class="gold">Анара</span></p>
+    <p class="meta" id="footer-meta">… · 2026 · <span class="az">Çox yaşa!</span></p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+  (function(){
+    'use strict';
+
+    /* ===== PROFILE token (values substituted later) ===== */
+    var PROFILE = { name: 'Анар', age: '30', date: '2026' };
+
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+    var touch = (('ontouchstart' in window) || navigator.maxTouchPoints > 0);
+
+    /* ===== inject PROFILE values into copy ===== */
+    function setText(id, txt){ var el = document.getElementById(id); if(el) el.textContent = txt; }
+    document.addEventListener('DOMContentLoaded', function(){
+      setText('toast-age', PROFILE.age);
+      setText('finale-age', PROFILE.age);
+      setText('breath-age', PROFILE.age + ' лет');
+      setText('footer-meta', PROFILE.date + ' · 2026 · ');
+      // rebuild footer meta with az accent preserved
+      var fm = document.getElementById('footer-meta');
+      if (fm){
+        fm.innerHTML = PROFILE.date + ' · 2026 · <span class="az">Çox yaşa!</span>';
+      }
+    });
+
+    /* ===== console greeting ===== */
+    try {
+      console.log(
+        '%c💨 Tüstü · Smoke & Embers %c\nAd günün mübarək, ' + PROFILE.name + '! 🎂\nЛаунж открыт. Çox yaşa!\n— сделано Юрой, для Анара',
+        'font-size:18px;font-weight:700;color:#d4af37;text-shadow:0 0 8px rgba(255,120,30,.6);',
+        'font-size:13px;color:#e8c977;line-height:1.6;'
+      );
+      console.log('%cПодсказка: ↑↑↓↓←→←→ b a — или жми 🎮', 'color:#7a1f2b;font-family:monospace;');
+    } catch(e){}
+
+    /* ===== ember cursor (desktop only) ===== */
+    if (!touch && window.matchMedia('(min-width:721px)').matches){
+      document.body.classList.add('has-ember');
+      var cur = document.getElementById('emberCursor');
+      var cx = 0, cy = 0, tx = 0, ty = 0, curRAF = null;
+      function curLoop(){
+        cx += (tx - cx) * 0.28; cy += (ty - cy) * 0.28;
+        cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
+        curRAF = requestAnimationFrame(curLoop);
+      }
+      window.addEventListener('mousemove', function(e){
+        tx = e.clientX; ty = e.clientY;
+        cur.style.opacity = '1';
+        if (!curRAF) curLoop();
+      }, { passive:true });
+      window.addEventListener('mouseout', function(e){ if(!e.relatedTarget) cur.style.opacity='0'; });
+    }
+
+    /* ===== cigar progress on scroll ===== */
+    var ash = document.querySelector('#cigar .ash');
+    var emberEl = document.querySelector('#cigar .ember');
+    var cigarRAF = null;
+    function updateCigar(){
+      cigarRAF = null;
+      var h = document.documentElement;
+      var max = (h.scrollHeight - h.clientHeight) || 1;
+      var p = Math.min(Math.max(window.scrollY / max, 0), 1);
+      var pct = (p * 100).toFixed(2) + '%';
+      ash.style.width = pct;
+      emberEl.style.left = pct;
+    }
+    window.addEventListener('scroll', function(){
+      if (!cigarRAF) cigarRAF = requestAnimationFrame(updateCigar);
+    }, { passive:true });
+    updateCigar();
+
+    /* ===== smoke canvas (drifting warm particles) ===== */
+    (function smoke(){
+      var c = document.getElementById('smoke');
+      var ctx = c.getContext('2d');
+      var W = 0, H = 0, DPR = 1;
+      var parts = [];
+      var raf = null;
+      var COLORS = [[212,175,55],[255,122,60],[122,31,43],[232,230,223]];
+
+      function size(){
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth; H = window.innerHeight;
+        c.width = Math.round(W * DPR); c.height = Math.round(H * DPR);
+        ctx.setTransform(DPR,0,0,DPR,0,0);
+      }
+      function mk(){
+        var col = COLORS[(Math.random()*COLORS.length)|0];
+        return {
+          x: Math.random()*W,
+          y: H + Math.random()*H*0.3,
+          r: 40 + Math.random()*120,
+          vy: -(8 + Math.random()*22),
+          vx: (Math.random()-0.5)*10,
+          life: 0,
+          max: 7 + Math.random()*8,
+          a: 0,
+          peak: 0.05 + Math.random()*0.06,
+          col: col,
+          drift: Math.random()*6.28
+        };
+      }
+      var COUNT;
+      function seed(){
+        COUNT = Math.max(10, Math.min(26, Math.round(W/60)));
+        parts = [];
+        for (var i=0;i<COUNT;i++){ var p = mk(); p.y = Math.random()*H; p.life = Math.random()*p.max; parts.push(p); }
+      }
+      function step(dt){
+        for (var i=0;i<parts.length;i++){
+          var p = parts[i];
+          p.life += dt;
+          p.drift += dt*0.5;
+          p.y += p.vy * dt;
+          p.x += (p.vx + Math.sin(p.drift)*6) * dt;
+          var t = p.life / p.max;
+          p.a = t < 0.5 ? (t/0.5)*p.peak : (1-(t-0.5)/0.5)*p.peak;
+          if (p.life >= p.max || p.y < -p.r){ parts[i] = mk(); }
+        }
+      }
+      function render(){
+        ctx.clearRect(0,0,W,H);
+        for (var i=0;i<parts.length;i++){
+          var p = parts[i];
+          var g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+          g.addColorStop(0,'rgba('+p.col[0]+','+p.col[1]+','+p.col[2]+','+p.a+')');
+          g.addColorStop(1,'rgba('+p.col[0]+','+p.col[1]+','+p.col[2]+',0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r,0,6.2832);
+          ctx.fill();
+        }
+      }
+      var last = 0;
+      function loop(t){
+        raf = requestAnimationFrame(loop);
+        var dt = Math.min(0.05, (t - last)/1000) || 0; last = t;
+        if (!document.hidden){ step(dt); render(); }
+      }
+      function start(){
+        size(); seed();
+        if (reduced){ render(); return; } // static smoke
+        last = performance.now();
+        if (!raf) raf = requestAnimationFrame(loop);
+      }
+      window.addEventListener('resize', function(){ size(); seed(); if(reduced) render(); }, { passive:true });
+      document.addEventListener('visibilitychange', function(){
+        if (document.hidden){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+        else if (!reduced && !raf){ last = performance.now(); raf = requestAnimationFrame(loop); }
+      });
+      start();
+    })();
+
+    /* ===== finale ember confetti ===== */
+    var emberFired = false;
+    function fireEmbers(){
+      if (emberFired) return; emberFired = true;
+      var c = document.getElementById('ember-canvas');
+      var ctx = c.getContext('2d');
+      var W, H, DPR = Math.min(window.devicePixelRatio || 1, 2);
+      function size(){
+        var r = c.parentElement.getBoundingClientRect();
+        W = r.width; H = r.height;
+        c.width = Math.round(W*DPR); c.height = Math.round(H*DPR);
+        ctx.setTransform(DPR,0,0,DPR,0,0);
+      }
+      size();
+      window.addEventListener('resize', size, { passive:true });
+      var COLS = ['#d4af37','#ff7a3c','#7a1f2b','#e8c977','#ffd27a'];
+      var ps = [];
+      var n = reduced ? 26 : 70;
+      for (var i=0;i<n;i++){
+        ps.push({
+          x: W*(0.2+Math.random()*0.6),
+          y: H + Math.random()*40,
+          vx: (Math.random()-0.5)*60,
+          vy: -(60 + Math.random()*160),
+          r: 1.5 + Math.random()*3,
+          life: 0, max: 2 + Math.random()*2.4,
+          col: COLS[(Math.random()*COLS.length)|0],
+          tw: Math.random()*6.28
+        });
+      }
+      if (reduced){
+        // draw static embers once
+        for (var k=0;k<ps.length;k++){ var s=ps[k]; ctx.fillStyle=s.col; ctx.globalAlpha=.8; ctx.beginPath(); ctx.arc(s.x,H*Math.random(),s.r,0,6.28); ctx.fill(); }
+        ctx.globalAlpha=1; return;
+      }
+      var last = performance.now(), eraf;
+      function loop(t){
+        var dt = Math.min(0.05,(t-last)/1000)||0; last=t;
+        ctx.clearRect(0,0,W,H);
+        var alive = false;
+        for (var i=0;i<ps.length;i++){
+          var p = ps[i];
+          p.life += dt;
+          if (p.life >= p.max) continue;
+          alive = true;
+          p.vy += 24*dt;
+          p.vx *= 0.99;
+          p.x += p.vx*dt; p.y += p.vy*dt;
+          p.tw += dt*8;
+          var a = (1 - p.life/p.max) * (0.6 + 0.4*Math.sin(p.tw));
+          ctx.globalAlpha = Math.max(0,a);
+          ctx.fillStyle = p.col;
+          ctx.shadowColor = p.col; ctx.shadowBlur = 8;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.2832); ctx.fill();
+        }
+        ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+        if (alive && !document.hidden) eraf = requestAnimationFrame(loop);
+      }
+      eraf = requestAnimationFrame(loop);
+    }
+
+    /* ===== GSAP scroll storytelling (with graceful fallback) ===== */
+    if (window.gsap && window.ScrollTrigger){
+      gsap.registerPlugin(ScrollTrigger);
+
+      // hero parallax
+      if (!reduced){
+        gsap.to('.hero h1', {
+          yPercent: 30, opacity: 0.55, ease: 'none',
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+        });
+        gsap.to('.hero .invite, .hero .sub, .hero .tagline', {
+          yPercent: 60, opacity: 0, ease: 'none',
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+        });
+      }
+
+      // generic reveals
+      gsap.utils.toArray('.reveal').forEach(function(el){
+        gsap.to(el, {
+          opacity: 1, y: 0,
+          duration: reduced ? 0.01 : 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none reverse' }
+        });
+      });
+
+      // toast stagger (rows)
+      if (!reduced){
+        gsap.utils.toArray('.toast').forEach(function(el, i){
+          gsap.fromTo(el, { y: 40 }, {
+            y: 0, ease: 'power3.out', duration: 0.8,
+            scrollTrigger: { trigger: el, start: 'top 88%' }
+          });
+        });
+      }
+
+      // breathing scrub
+      var orb = document.querySelector('.breath-orb');
+      if (orb && !reduced){
+        gsap.fromTo(orb, { scale: 0.6, opacity: 0.4 }, {
+          scale: 1.25, opacity: 1, ease: 'sine.inOut',
+          scrollTrigger: { trigger: '#breath', start: 'top bottom', end: 'bottom top', scrub: true }
+        });
+      }
+      document.querySelectorAll('[data-breath]').forEach(function(w){
+        if (reduced){ gsap.set(w, { opacity: 1, scale: 1 }); return; }
+        gsap.fromTo(w, { opacity: 0.1, scale: 0.9 }, {
+          opacity: 1, scale: 1, ease: 'none',
+          scrollTrigger: {
+            trigger: w.closest('.breath-screen'),
+            start: 'top bottom', end: 'center center', scrub: true
+          }
+        });
+        gsap.to(w, {
+          opacity: 0.15, scale: 0.94, ease: 'none',
+          scrollTrigger: {
+            trigger: w.closest('.breath-screen'),
+            start: 'center center', end: 'bottom top', scrub: true
+          }
+        });
+      });
+
+      // finale trigger
+      ScrollTrigger.create({
+        trigger: '.finale',
+        start: 'top 65%',
+        onEnter: fireEmbers
+      });
+
+    } else {
+      // fallback: everything visible, fire embers near bottom
+      document.documentElement.classList.add('gsap-off');
+      document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity='1'; el.style.transform='none'; });
+      window.addEventListener('scroll', function(){
+        var f = document.querySelector('.finale');
+        if (f && f.getBoundingClientRect().top < window.innerHeight * 0.8) fireEmbers();
+      }, { passive:true });
+    }
+
+    /* ===== Konami code → Anar Quest ===== */
+    var seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    var pos = 0;
+    document.addEventListener('keydown', function(e){
+      var k = e.key;
+      var want = seq[pos];
+      if (k === want || (k && k.toLowerCase && k.toLowerCase() === want)){
+        pos++;
+        if (pos === seq.length){ pos = 0; if (window.AnarQuest) AnarQuest.open(); }
+      } else {
+        pos = (k === seq[0]) ? 1 : 0;
+      }
+    });
+
+  /* =====================================================================
+     ANAR QUEST — self-contained mini-game (inlined from _build/anar-quest.js)
+     ===================================================================== */
+  window.AnarQuest = (function () {
+    'use strict';
+
+    var theme = null;
+    var root, btn, canvas, ctx;
+    var W = 0, H = 0, DPR = 1;
+    var raf = null, last = 0;
+    var state = 'ready'; // 'ready' | 'playing' | 'win'
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    // world
+    var groundY, playerSize, baseSpeed, speed, distance, goalDist;
+    var player, entities, confetti, score, shake, stumble, goalSpawned, goalEnt;
+    var spawnObstacleAt, spawnCollectAt;
+
+    function injectStyles() {
+      if (document.getElementById('aq-style')) return;
+      var s = document.createElement('style');
+      s.id = 'aq-style';
+      s.textContent =
+        '.aq-overlay{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;background:rgba(4,4,8,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}' +
+        '.aq-overlay.aq-open{display:flex;}' +
+        '.aq-stage{position:relative;width:min(960px,96vw);height:min(560px,82vh);border-radius:16px;overflow:hidden;box-shadow:0 30px 90px -20px rgba(0,0,0,.8);}' +
+        '.aq-stage canvas{display:block;width:100%;height:100%;touch-action:none;}' +
+        '.aq-close{position:absolute;top:10px;right:12px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#fff;font:600 20px/40px system-ui,sans-serif;text-align:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;}' +
+        '.aq-close:hover{background:rgba(0,0,0,.7);}' +
+        '.aq-fab{position:fixed;right:18px;bottom:18px;z-index:1000;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;font-size:24px;line-height:54px;text-align:center;color:#0a0a0a;box-shadow:0 8px 24px -6px rgba(0,0,0,.6);transition:transform .25s ease, box-shadow .25s ease;-webkit-tap-highlight-color:transparent;padding:0;}' +
+        '.aq-fab:hover{transform:translateY(-3px) rotate(-8deg);}' +
+        '@media (max-width:520px){.aq-fab{width:48px;height:48px;font-size:21px;line-height:48px;right:14px;bottom:14px;}}';
+      document.head.appendChild(s);
+    }
+
+    function buildDom() {
+      root = document.createElement('div');
+      root.className = 'aq-overlay';
+      root.setAttribute('aria-hidden', 'true');
+      var stage = document.createElement('div');
+      stage.className = 'aq-stage';
+      canvas = document.createElement('canvas');
+      var close = document.createElement('button');
+      close.className = 'aq-close';
+      close.innerHTML = '&times;';
+      close.setAttribute('aria-label', 'Закрыть игру');
+      close.addEventListener('click', api.close);
+      stage.appendChild(canvas);
+      stage.appendChild(close);
+      root.appendChild(stage);
+      root.addEventListener('click', function (e) { if (e.target === root) api.close(); });
+      document.body.appendChild(root);
+      ctx = canvas.getContext('2d');
+
+      btn = document.createElement('button');
+      btn.className = 'aq-fab';
+      btn.textContent = '🎮';
+      btn.title = 'Anar Quest';
+      btn.setAttribute('aria-label', 'Открыть мини-игру Anar Quest');
+      btn.style.background = theme.accent || '#ffce00';
+      btn.addEventListener('click', api.open);
+      document.body.appendChild(btn);
+    }
+
+    function resize() {
+      var stage = canvas.parentElement;
+      var r = stage.getBoundingClientRect();
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.max(320, r.width);
+      H = Math.max(240, r.height);
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      groundY = H * 0.82;
+      playerSize = Math.max(34, Math.min(64, H * 0.11));
+      baseSpeed = Math.max(260, W * 0.42); // px/sec
+      if (player) player.y = Math.min(player.y, groundY);
+    }
+
+    function reset() {
+      score = 0;
+      distance = 0;
+      goalDist = 8200;
+      speed = baseSpeed;
+      shake = 0;
+      stumble = 0;
+      goalSpawned = false;
+      goalEnt = null;
+      entities = [];
+      confetti = [];
+      player = { x: W * 0.2, y: groundY, vy: 0, size: playerSize, onGround: true, bob: 0 };
+      spawnObstacleAt = 900;
+      spawnCollectAt = 480;
+    }
+
+    function jump() {
+      if (state === 'ready') { state = 'playing'; return; }
+      if (state === 'win') { restart(); return; }
+      if (player.onGround) {
+        player.vy = -Math.sqrt(2 * 2600 * (groundY * 0.42)); // reach ~42% of ground height
+        player.onGround = false;
+      }
+    }
+
+    function restart() { reset(); state = 'playing'; }
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    function spawn() {
+      if (goalSpawned) return;
+      if (distance >= spawnCollectAt) {
+        spawnCollectAt = distance + rnd(520, 980);
+        var high = Math.random() < 0.5;
+        entities.push({
+          type: 'coin', x: W + 40,
+          y: high ? groundY - playerSize * rnd(1.4, 2.2) : groundY - playerSize * 0.5,
+          size: playerSize * 0.8,
+          emoji: theme.collectibles[(Math.random() * theme.collectibles.length) | 0],
+          dead: false
+        });
+      }
+      if (distance >= spawnObstacleAt) {
+        spawnObstacleAt = distance + rnd(1100, 1900);
+        entities.push({
+          type: 'rock', x: W + 40, y: groundY,
+          size: playerSize * rnd(0.7, 0.95),
+          emoji: theme.obstacle, hit: false
+        });
+      }
+    }
+
+    function overlap(ax, ay, ar, bx, by, br) {
+      var dx = ax - bx, dy = ay - by, rr = ar + br;
+      return dx * dx + dy * dy < rr * rr;
+    }
+
+    function update(dt) {
+      // speed ramps a touch over the run
+      speed = baseSpeed * (1 + Math.min(distance / goalDist, 1) * 0.45);
+      var eff = stumble > 0 ? speed * 0.45 : speed;
+      if (stumble > 0) stumble -= dt;
+      distance += eff * dt;
+
+      // player physics
+      player.vy += 2600 * dt;
+      player.y += player.vy * dt;
+      if (player.y >= groundY) { player.y = groundY; player.vy = 0; player.onGround = true; }
+      player.bob += dt * (player.onGround ? 12 : 0);
+
+      spawn();
+
+      // goal
+      if (!goalSpawned && distance >= goalDist) {
+        goalSpawned = true;
+        goalEnt = { type: 'goal', x: W + 60, y: groundY, size: playerSize * 1.5, emoji: theme.goal };
+        entities.push(goalEnt);
+      }
+
+      var pr = player.size * 0.42;
+      for (var i = entities.length - 1; i >= 0; i--) {
+        var e = entities[i];
+        e.x -= eff * dt;
+        var er = e.size * 0.40;
+        if (!e.dead && overlap(player.x, player.y - player.size * 0.4, pr, e.x, e.y - e.size * 0.4, er)) {
+          if (e.type === 'coin') { e.dead = true; score += 10; popConfetti(e.x, e.y, 8); }
+          else if (e.type === 'rock' && !e.hit) { e.hit = true; stumble = 0.35; shake = 8; }
+          else if (e.type === 'goal') { win(); }
+        }
+        if (e.x < -80) entities.splice(i, 1);
+      }
+
+      if (shake > 0) shake -= dt * 40;
+
+      // confetti
+      for (var c = confetti.length - 1; c >= 0; c--) {
+        var p = confetti[c];
+        p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+        if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+      }
+    }
+
+    function popConfetti(x, y, n) {
+      var cols = [theme.accent, theme.accent2, '#ffffff', '#ffd166'];
+      for (var i = 0; i < n; i++) {
+        confetti.push({
+          x: x, y: y, vx: rnd(-160, 160), vy: rnd(-260, -40),
+          size: rnd(5, 10), life: rnd(0.8, 1.6), rot: rnd(0, 6.28), vr: rnd(-8, 8),
+          col: cols[(Math.random() * cols.length) | 0]
+        });
+      }
+    }
+
+    function win() {
+      if (state === 'win') return;
+      state = 'win';
+      for (var i = 0; i < 70; i++) popConfetti(rnd(0, W), rnd(-20, H * 0.3), 1);
+    }
+
+    function drawBg() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, theme.sky || theme.bg1);
+      g.addColorStop(1, theme.bg2 || theme.bg1);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      // distant glow
+      if (!reduced) {
+        var gx = (1 - (distance % 4000) / 4000) * W;
+        var rg = ctx.createRadialGradient(gx, H * 0.4, 0, gx, H * 0.4, H * 0.6);
+        rg.addColorStop(0, hexA(theme.accent, 0.16));
+        rg.addColorStop(1, hexA(theme.accent, 0));
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+      }
+      // ground
+      ctx.fillStyle = theme.ground || '#111';
+      ctx.fillRect(0, groundY + player.size * 0.1, W, H - groundY);
+      // ground speed stripes
+      ctx.fillStyle = hexA(theme.accent, 0.18);
+      var stripeW = 46, off = (distance % stripeW);
+      for (var x = -off; x < W; x += stripeW) ctx.fillRect(x, groundY + player.size * 0.1, 22, 4);
+    }
+
+    function emoji(ch, x, y, size) {
+      ctx.font = size + 'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(ch, x, y);
+    }
+
+    function draw() {
+      var sx = shake > 0 ? rnd(-shake, shake) : 0;
+      ctx.save();
+      ctx.translate(sx, 0);
+      drawBg();
+      // entities
+      for (var i = 0; i < entities.length; i++) {
+        var e = entities[i];
+        if (e.dead) continue;
+        var by = e.type === 'coin' && !reduced ? Math.sin(distance / 220 + e.x) * 4 : 0;
+        emoji(e.emoji, e.x, e.y - e.size * 0.4 + by, e.size);
+      }
+      // player
+      ctx.save();
+      ctx.translate(player.x, player.y - player.size * 0.4);
+      ctx.rotate(Math.sin(player.bob) * (player.onGround ? 0.06 : 0) + (player.onGround ? 0 : 0.12));
+      emoji(theme.player, 0, 0, player.size);
+      ctx.restore();
+      // HUD
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '600 16px system-ui,sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('★ ' + score, 16, 14);
+      // progress bar
+      var pw = W - 32, pp = Math.min(distance / goalDist, 1);
+      ctx.fillStyle = hexA('#ffffff', 0.15); ctx.fillRect(16, 40, pw, 6);
+      ctx.fillStyle = theme.accent || '#fff'; ctx.fillRect(16, 40, pw * pp, 6);
+      emoji('🎂', 16 + pw, 43, 18);
+      // confetti
+      for (var c = 0; c < confetti.length; c++) {
+        var p = confetti[c];
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
+      }
+      ctx.restore();
+
+      if (state === 'ready') overlayText(theme.title || 'ANAR QUEST',
+        'Тап / Space — прыжок. Доберись до торта 🎂', '▶ тап, чтобы начать');
+      if (state === 'win') overlayText('Ad günün mübarək, Анар! 🎉',
+        'Очки: ' + score + ' · Çox yaşa!', 'тап — сыграть ещё раз');
+    }
+
+    function overlayText(title, sub, hint) {
+      ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(0, 0, W, H);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '700 ' + Math.round(Math.min(34, W * 0.06)) + 'px system-ui,sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(title, W / 2, H * 0.4);
+      ctx.fillStyle = '#fff';
+      ctx.font = '500 ' + Math.round(Math.min(18, W * 0.034)) + 'px system-ui,sans-serif';
+      ctx.fillText(sub, W / 2, H * 0.4 + 38);
+      ctx.fillStyle = hexA('#ffffff', 0.7);
+      ctx.font = '500 14px system-ui,sans-serif';
+      ctx.fillText(hint, W / 2, H * 0.4 + 72);
+    }
+
+    function loop(t) {
+      raf = requestAnimationFrame(loop);
+      var dt = Math.min(0.05, (t - last) / 1000) || 0; last = t;
+      if (state === 'playing') update(dt);
+      else {
+        // idle: keep confetti + slow drift alive
+        for (var c = confetti.length - 1; c >= 0; c--) {
+          var p = confetti[c]; p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+          if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+        }
+      }
+      draw();
+    }
+
+    function hexA(hex, a) {
+      if (!hex) return 'rgba(255,255,255,' + a + ')';
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      var n = parseInt(hex, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+
+    // input
+    function onKey(e) {
+      if (!root.classList.contains('aq-open')) return;
+      if (e.key === 'Escape') { api.close(); return; }
+      if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Spacebar') { e.preventDefault(); jump(); }
+    }
+
+    var api = {
+      init: function (t) {
+        theme = t || {};
+        if (!theme.collectibles || !theme.collectibles.length) theme.collectibles = ['⭐'];
+        injectStyles();
+        buildDom();
+        resize();
+        reset();
+        window.addEventListener('resize', function () { if (root.classList.contains('aq-open')) resize(); });
+        document.addEventListener('keydown', onKey);
+        canvas.addEventListener('pointerdown', function (e) { e.preventDefault(); jump(); });
+        return api;
+      },
+      open: function () {
+        if (!root) return;
+        root.classList.add('aq-open');
+        root.setAttribute('aria-hidden', 'false');
+        resize(); reset(); state = 'ready';
+        last = performance.now();
+        if (!raf) raf = requestAnimationFrame(loop);
+      },
+      close: function () {
+        if (!root) return;
+        root.classList.remove('aq-open');
+        root.setAttribute('aria-hidden', 'true');
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+      }
+    };
+    return api;
+  })();
+
+  /* ===== init Anar Quest with the Smoke & Embers theme ===== */
+  AnarQuest.init({ id:'smoke', title:'ANAR QUEST · Tüstü', bg1:'#120a14', bg2:'#241420', ground:'#0a0712', sky:'#1a1320', accent:'#d4af37', accent2:'#7a1f2b', player:'🧔', collectibles:['💨','🚬','☕','🔥'], obstacle:'🪑', goal:'🎂' });
+
+  })();
+  </script>
+</body>
+</html>

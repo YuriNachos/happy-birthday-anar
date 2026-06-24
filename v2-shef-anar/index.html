@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Şef Anar · Дегустационное меню</title>
+<meta name="description" content="Дегустационное меню в честь Анара — вечер из стольких блюд, сколько в тебе граней.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --char:#15110d;
+    --char2:#211a12;
+    --gold:#e8b96b;
+    --gold2:#b8893f;
+    --cream:#f3e7d3;
+    --nar:#9e2b2b;
+    --ink:#efe3cf;
+    --inkdim:rgba(239,227,207,.62);
+    --inkfaint:rgba(239,227,207,.40);
+    --line:rgba(232,185,107,.22);
+    --glass:rgba(243,231,211,.045);
+    --display:'Playfair Display',Georgia,serif;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --body:'Inter',-apple-system,system-ui,sans-serif;
+    --hand:'Caveat',cursive;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--body);
+    background:var(--char);
+    color:var(--ink);
+    overflow-x:hidden;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    min-height:100vh;
+  }
+  /* paper / vignette overlays */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(232,185,107,.10), transparent 60%),
+      radial-gradient(100% 120% at 50% 120%, rgba(158,43,43,.12), transparent 60%),
+      radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.62) 100%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+  #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+  .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+  /* ---- top nav back ---- */
+  .back-link{
+    position:fixed;top:clamp(14px,2vw,22px);left:clamp(14px,2vw,22px);z-index:1200;
+    display:inline-flex;align-items:center;gap:8px;
+    min-height:44px;padding:9px 18px;
+    font-family:var(--body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;
+    border:1px solid var(--line);border-radius:40px;
+    background:rgba(21,17,13,.6);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:border-color .3s,color .3s,transform .3s,background .3s;
+  }
+  .back-link:hover{border-color:var(--gold);color:var(--gold);transform:translateX(-2px)}
+
+  /* ---- custom cursor (desktop only) ---- */
+  .cursor,.cursor-ring{display:none}
+  @media (min-width:721px) and (pointer:fine){
+    body{cursor:none}
+    a,button,.flip{cursor:none}
+    .cursor{
+      display:block;position:fixed;top:0;left:0;z-index:3000;pointer-events:none;
+      width:9px;height:9px;border-radius:50%;background:var(--gold);
+      transform:translate(-50%,-50%);box-shadow:0 0 12px 3px rgba(232,185,107,.7);
+      transition:width .2s,height .2s,background .2s;
+    }
+    .cursor-ring{
+      display:block;position:fixed;top:0;left:0;z-index:2999;pointer-events:none;
+      width:34px;height:34px;border:1px solid rgba(232,185,107,.5);border-radius:50%;
+      transform:translate(-50%,-50%);transition:transform .18s ease,border-color .25s;
+    }
+  }
+
+  /* ---- typography helpers ---- */
+  .eyebrow{
+    font-family:var(--body);font-size:clamp(11px,1.6vw,13px);
+    letter-spacing:.34em;text-transform:uppercase;color:var(--gold);
+    display:inline-block;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"— "}
+  .eyebrow::after{content:" —"}
+  .lead{font-family:var(--serif);font-style:italic;font-size:clamp(20px,3vw,30px);color:var(--inkdim);line-height:1.45}
+
+  /* ===================== HERO ===================== */
+  .hero{
+    position:relative;min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:90px clamp(18px,5vw,40px) 60px;overflow:hidden;
+  }
+  .hero .plate{
+    width:clamp(220px,42vw,420px);height:clamp(220px,42vw,420px);
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);
+    border-radius:50%;z-index:-1;
+    background:radial-gradient(circle at 50% 42%, rgba(232,185,107,.22), rgba(184,137,63,.07) 45%, transparent 70%);
+    filter:blur(6px);
+    will-change:transform;
+  }
+  .hero-kicker{
+    font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.4vw,22px);
+    letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;
+  }
+  .hero h1{
+    font-family:var(--display);font-weight:900;
+    font-size:clamp(48px,15vw,168px);line-height:.92;letter-spacing:.01em;
+    color:var(--cream);
+    text-shadow:0 0 42px rgba(232,185,107,.45),0 0 90px rgba(184,137,63,.25);
+    margin:2px 0;
+  }
+  .hero h1 .accent{color:var(--gold)}
+  .hero .subtitle{
+    font-family:var(--serif);font-style:italic;font-size:clamp(20px,4vw,40px);
+    color:var(--ink);margin-top:10px;
+  }
+  .hero .tagline{
+    font-family:var(--body);font-size:clamp(13px,2.1vw,17px);letter-spacing:.16em;
+    text-transform:uppercase;color:var(--inkdim);margin-top:22px;
+  }
+  .hero .az{
+    display:inline-block;margin-top:18px;font-family:var(--serif);font-style:italic;
+    font-size:clamp(16px,2.6vw,22px);color:var(--gold);
+    padding:6px 20px;border:1px solid var(--line);border-radius:40px;
+    background:var(--glass);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  }
+  .scroll-cue{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-family:var(--body);font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--inkdim);display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-cue span{font-size:20px;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(7px);opacity:1}}
+
+  /* ===================== SECTION SHELL ===================== */
+  section{position:relative;z-index:2;padding:clamp(64px,11vw,140px) 0}
+  .section-head{max-width:760px;margin:0 auto clamp(40px,7vw,70px);text-align:center}
+  .section-head h2{
+    font-family:var(--display);font-weight:700;
+    font-size:clamp(30px,6vw,62px);line-height:1.04;color:var(--cream);
+    margin-bottom:18px;
+  }
+  .divider{
+    width:64px;height:1px;margin:0 auto;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    position:relative;
+  }
+  .divider::after{
+    content:"✦";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:11px;color:var(--gold);background:var(--char);padding:0 8px;
+  }
+
+  /* ---- apéritif ---- */
+  .aperitif{max-width:780px;margin:0 auto;text-align:center}
+  .aperitif p{
+    font-family:var(--serif);font-size:clamp(20px,3.2vw,30px);font-style:italic;
+    line-height:1.5;color:var(--ink);
+  }
+  .aperitif p .hl{color:var(--gold);font-style:normal;font-weight:500}
+
+  /* ===================== COURSES (flip cards) ===================== */
+  .courses{display:flex;flex-direction:column;gap:clamp(26px,5vw,52px)}
+  .course{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);
+    align-items:center;
+  }
+  .course.flip-side{direction:rtl}
+  .course.flip-side > *{direction:ltr}
+  .course-meta{padding:6px 0}
+  .course-num{
+    font-family:var(--body);font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold2);margin-bottom:10px;display:block;
+  }
+  .course-fr{
+    font-family:var(--serif);font-style:italic;font-size:clamp(16px,2.4vw,21px);
+    color:var(--gold);margin-bottom:6px;
+  }
+  .course-name{
+    font-family:var(--display);font-weight:700;font-size:clamp(24px,3.6vw,40px);
+    color:var(--cream);line-height:1.08;margin-bottom:16px;
+  }
+  .course-note{font-size:clamp(14px,1.9vw,16px);color:var(--inkdim);max-width:42ch;overflow-wrap:anywhere}
+  .course-name,.course-fr,.carte-name,.carte-desc,.flip-back li{overflow-wrap:anywhere}
+  .course-note .crown{
+    display:inline-block;margin-top:14px;font-family:var(--body);font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--nar);
+    border:1px solid rgba(158,43,43,.5);border-radius:30px;padding:5px 14px;
+  }
+
+  /* flip card */
+  .flip{
+    perspective:1400px;height:clamp(280px,40vw,360px);width:100%;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .flip-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .85s cubic-bezier(.2,.8,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flip.is-flipped .flip-inner{transform:rotateY(180deg)}
+  .flip-face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:18px;overflow:hidden;
+    border:1px solid var(--line);
+    background:linear-gradient(160deg,rgba(33,26,18,.92),rgba(21,17,13,.96));
+    box-shadow:0 26px 70px -34px rgba(0,0,0,.9),inset 0 0 0 1px rgba(232,185,107,.05);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;
+  }
+  .flip-face::before{
+    content:"";position:absolute;inset:9px;border:1px solid rgba(232,185,107,.16);border-radius:11px;pointer-events:none;
+  }
+  .flip-front .dish{
+    font-size:clamp(58px,11vw,96px);line-height:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5));
+    position:relative;z-index:1;
+  }
+  .flip-front .dish-glow{
+    position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);
+    width:64%;height:55%;border-radius:50%;z-index:0;
+    background:radial-gradient(circle,rgba(232,185,107,.28),transparent 68%);
+    filter:blur(8px);
+  }
+  .flip-front .dish-num{
+    font-family:var(--display);font-weight:900;position:absolute;top:14px;left:18px;
+    font-size:clamp(34px,6vw,54px);color:rgba(232,185,107,.13);line-height:1;z-index:0;
+  }
+  .flip-front .tap-hint{
+    margin-top:22px;font-family:var(--body);font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--inkfaint);position:relative;z-index:1;
+  }
+  .flip-back{transform:rotateY(180deg);background:linear-gradient(160deg,rgba(40,30,18,.96),rgba(24,18,12,.98))}
+  .flip-back .ing-title{
+    font-family:var(--serif);font-style:italic;font-size:clamp(17px,2.4vw,22px);
+    color:var(--gold);margin-bottom:14px;
+  }
+  .flip-back ul{list-style:none;display:flex;flex-direction:column;gap:9px;max-width:90%}
+  .flip-back li{
+    font-size:clamp(13px,1.8vw,15px);color:var(--ink);position:relative;padding-left:18px;line-height:1.4;
+  }
+  .flip-back li::before{content:"·";position:absolute;left:4px;top:-1px;color:var(--gold);font-size:20px;line-height:1}
+
+  /* flambé crown card */
+  .flip.is-crown .flip-front{border-color:rgba(158,43,43,.5)}
+  .flambe{position:absolute;left:0;right:0;bottom:0;height:64%;pointer-events:none;z-index:0;overflow:hidden}
+  .flambe .flame{
+    position:absolute;bottom:-8%;border-radius:50% 50% 48% 48%;
+    background:radial-gradient(circle at 50% 80%, #ffd98a 0%, var(--gold) 28%, var(--nar) 70%, transparent 80%);
+    filter:blur(3px);mix-blend-mode:screen;opacity:.9;
+    animation:flicker 1.5s ease-in-out infinite;transform-origin:bottom center;
+    will-change:transform,opacity;
+  }
+  .flambe .f1{left:30%;width:26%;height:70%;animation-delay:0s}
+  .flambe .f2{left:46%;width:20%;height:88%;animation-delay:.3s}
+  .flambe .f3{left:58%;width:24%;height:62%;animation-delay:.6s}
+  @keyframes flicker{
+    0%,100%{transform:scaleY(1) scaleX(1) translateX(0);opacity:.85}
+    25%{transform:scaleY(1.12) scaleX(.94) translateX(-3px);opacity:1}
+    50%{transform:scaleY(.92) scaleX(1.06) translateX(2px);opacity:.8}
+    75%{transform:scaleY(1.08) scaleX(.97) translateX(-2px);opacity:.95}
+  }
+
+  /* ===================== CARTE ===================== */
+  .carte{max-width:760px;margin:0 auto}
+  .carte-row{
+    display:flex;align-items:baseline;gap:10px;padding:15px 0;border-bottom:1px dashed rgba(232,185,107,.2);
+  }
+  .carte-row:last-child{border-bottom:none}
+  .carte-name{font-family:var(--serif);font-size:clamp(18px,2.6vw,24px);color:var(--cream);white-space:nowrap}
+  .carte-dots{flex:1;border-bottom:1px dotted rgba(232,185,107,.35);transform:translateY(-4px)}
+  .carte-desc{font-size:clamp(13px,1.8vw,15px);color:var(--inkdim);font-style:italic;text-align:right;flex-shrink:1}
+
+  /* ===================== LE MOT DU CHEF ===================== */
+  .chef-note{
+    max-width:920px;margin:0 auto;
+    display:grid;grid-template-columns:0.85fr 1.15fr;gap:clamp(26px,4vw,48px);align-items:center;
+  }
+  .chef-portrait{
+    position:relative;border-radius:18px;overflow:hidden;
+    border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.85);
+    aspect-ratio:1290/1607;background:linear-gradient(160deg,rgba(40,30,18,.6),rgba(21,17,13,.9));
+  }
+  .chef-portrait img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.02)}
+  .chef-portrait::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 100% at 50% 110%, rgba(158,43,43,.28), transparent 55%),
+               linear-gradient(180deg,transparent 55%,rgba(21,17,13,.6) 100%);
+    box-shadow:inset 0 0 60px rgba(232,185,107,.16);
+  }
+  .chef-portrait .fallback{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:90px;
+  }
+  .chef-card{
+    position:relative;padding:clamp(26px,4vw,44px);border-radius:18px;
+    background:var(--glass);border:1px solid var(--line);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 24px 60px -34px rgba(0,0,0,.8);
+  }
+  .chef-card .label{
+    font-family:var(--body);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold2);margin-bottom:18px;
+  }
+  .chef-card .hand{
+    font-family:var(--hand);font-size:clamp(24px,3.6vw,34px);line-height:1.4;color:var(--ink);
+  }
+  .chef-card .hand .gold{color:var(--gold)}
+  .chef-card .sign{
+    margin-top:22px;font-family:var(--hand);font-size:clamp(22px,3vw,30px);color:var(--gold);text-align:right;
+  }
+
+  /* ===================== LE GÂTEAU (final) ===================== */
+  .gateau{text-align:center;position:relative}
+  .cake-stage{position:relative;display:inline-block;margin:8px auto 30px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .cake-stage .cake{
+    font-size:clamp(96px,22vw,200px);line-height:1;display:block;
+    filter:drop-shadow(0 18px 40px rgba(0,0,0,.6));
+    transition:transform .3s ease;
+  }
+  .cake-stage:hover .cake,.cake-stage:active .cake{transform:scale(1.05) rotate(-2deg)}
+  .cake-glow{
+    position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);
+    width:90%;height:80%;border-radius:50%;z-index:-1;
+    background:radial-gradient(circle,rgba(232,185,107,.4),rgba(158,43,43,.12) 50%,transparent 72%);
+    filter:blur(14px);
+  }
+  .candles{
+    font-family:var(--serif);font-style:italic;font-size:clamp(20px,3.4vw,32px);color:var(--gold);margin-bottom:14px;
+  }
+  .gateau h2{
+    font-family:var(--display);font-weight:900;font-size:clamp(34px,8.5vw,96px);line-height:1;
+    color:var(--cream);text-shadow:0 0 44px rgba(232,185,107,.45);margin-bottom:10px;
+  }
+  .gateau .tap-note{font-family:var(--body);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--inkfaint);margin-top:6px}
+  #confetti-canvas{position:fixed;inset:0;z-index:1500;pointer-events:none;display:none}
+
+  /* ===================== FOOTER ===================== */
+  footer{
+    position:relative;z-index:2;text-align:center;
+    padding:clamp(50px,8vw,90px) clamp(18px,5vw,40px) 70px;
+    border-top:1px solid var(--line);
+  }
+  footer .sig{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.6vw,24px);color:var(--gold);margin-bottom:10px}
+  footer .meta{font-family:var(--body);font-size:13px;letter-spacing:.1em;color:var(--inkdim)}
+  footer .az-foot{margin-top:14px;font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.2vw,19px);color:var(--ink)}
+  footer .year{margin-top:8px;font-family:var(--body);font-size:11px;letter-spacing:.3em;color:var(--inkfaint)}
+
+  /* ===================== REVEAL DEFAULTS ===================== */
+  .reveal{opacity:0;transform:translateY(34px)}
+  .gsap-off .reveal{opacity:1;transform:none}
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width:760px){
+    .course,.course.flip-side{grid-template-columns:1fr;direction:ltr;gap:18px}
+    .course .flip{order:-1}
+    .course-note{max-width:100%}
+    .chef-note{grid-template-columns:1fr;gap:22px}
+    .chef-portrait{max-width:300px;margin:0 auto;width:100%}
+    .carte-row{flex-wrap:wrap;gap:4px}
+    .carte-name{white-space:normal}
+    .carte-dots{min-width:24px}
+    .carte-desc{text-align:left;flex-basis:100%}
+  }
+  @media (max-width:540px){
+    .hero h1{font-size:clamp(46px,17vw,90px)}
+    .flip{height:clamp(260px,72vw,320px)}
+    .back-link{font-size:11px;padding:8px 14px}
+    .eyebrow{letter-spacing:.22em}
+  }
+
+  /* ===================== REDUCED MOTION ===================== */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+    .reveal{opacity:1 !important;transform:none !important}
+    .scroll-cue span{animation:none}
+    .flambe .flame{animation:none;opacity:.9}
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="bg-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<a href="../" class="back-link" aria-label="Назад в меню">← меню</a>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="plate" id="heroPlate"></div>
+  <div class="hero-kicker">Restaurant · Une étoile dans le cœur</div>
+  <h1>ŞEF <span class="accent">ANAR</span></h1>
+  <div class="subtitle">La table de Chef Anar</div>
+  <div class="tagline">Дегустационное меню · вечер в твою честь</div>
+  <div class="az">Nuş olsun</div>
+  <div class="scroll-cue">меню<span>↓</span></div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===================== APÉRITIF ===================== -->
+  <section id="aperitif">
+    <div class="section-head reveal">
+      <span class="eyebrow">Apéritif</span>
+      <h2>Вступление</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="aperitif reveal">
+      <p>Сегодня кухня работает для <span class="hl">одного гостя</span>. Шеф — он же именинник: человек, который готовит так, что это отдельная причина с ним дружить. Садись. Мы подаём вечер из стольких блюд, сколько в тебе граней. Никто не спросит про дедлайны.</p>
+    </div>
+  </section>
+
+  <!-- ===================== COURSES ===================== -->
+  <section id="courses">
+    <div class="section-head reveal">
+      <span class="eyebrow">Le menu dégustation</span>
+      <h2>Блюда вечера</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="courses" id="coursesGrid"></div>
+  </section>
+
+  <!-- ===================== CARTE ===================== -->
+  <section id="carte">
+    <div class="section-head reveal">
+      <span class="eyebrow">La carte</span>
+      <h2>Напитки</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="carte reveal" id="carteList"></div>
+  </section>
+
+  <!-- ===================== LE MOT DU CHEF ===================== -->
+  <section id="mot">
+    <div class="section-head reveal">
+      <span class="eyebrow">Le mot du chef</span>
+      <h2>Записка от шефа</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="chef-note">
+      <div class="chef-portrait reveal">
+        <img src="../assets/anar.jpg" alt="Şef Anar" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="fallback" style="display:none">🧑‍🍳</div>
+      </div>
+      <div class="chef-card reveal">
+        <div class="label">— écrit à la main —</div>
+        <p class="hand">Анар, на этой кухне ты — <span class="gold">главный ингредиент</span>. Пусть новый год будет как твой плов: томится не спеша, без суеты, а получается — пальчики оближешь. <span class="gold">Çox yaşa!</span></p>
+        <div class="sign">— Юра, твой су-шеф</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== LE GÂTEAU (FINAL) ===================== -->
+<section id="gateau" class="gateau">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-bottom:30px">
+      <span class="eyebrow">Le dessert</span>
+    </div>
+    <div class="candles reveal" id="candleLine"></div>
+    <div class="cake-stage reveal" id="cakeStage" role="button" tabindex="0" aria-label="Торт — нажми ещё конфетти">
+      <div class="cake-glow"></div>
+      <span class="cake">🎂</span>
+    </div>
+    <h2 class="reveal">Ad günün mübarək, Анар!</h2>
+    <p class="lead reveal" style="margin-top:6px">С днём рождения!</p>
+    <p class="tap-note reveal">нажми на торт — ещё конфетти</p>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="sig reveal">Bon appétit, Şef.</div>
+  <div class="meta reveal" id="footMeta"></div>
+  <div class="az-foot reveal">Çox yaşa! · живи долго</div>
+  <div class="year reveal">MMXXVI · 2026</div>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- canvas-confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- PROFILE token ---------- */
+  const PROFILE = { name: 'Анар', age: '30', date: '2026' };
+
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- console greeting ---------- */
+  console.log(
+    '%c🍲 Şef Anar %c Дегустационное меню \n%cAd günün mübarək, Анар! %c· Nuş olsun · сделано Юрой',
+    'font-size:20px;font-weight:bold;color:#15110d;background:#e8b96b;padding:6px 12px;border-radius:6px 0 0 6px;',
+    'font-size:13px;color:#e8b96b;background:#211a12;padding:6px 12px;border-radius:0 6px 6px 0;',
+    'font-size:14px;color:#9e2b2b;font-weight:bold;padding-top:8px;',
+    'font-size:12px;color:#b8893f;'
+  );
+
+  /* ---------- footer meta ---------- */
+  document.getElementById('footMeta').innerHTML =
+    'сделано Юрой · для Анара · ' + PROFILE.date;
+  document.getElementById('candleLine').textContent = PROFILE.age + ' свечей';
+
+  /* ====================================================================
+     COURSES — flip cards (content from SPEC §3)
+     ==================================================================== */
+  const COURSES = [
+    { fr:'Amuse-bouche', name:'«Гостеприимство по-бакински»', dish:'🫖',
+      ingredients:['бесконечный чай в armudu','«садись, поешь»','три добавки','ноль шансов уйти голодным'] },
+    { fr:'Plat principal', name:'«Плов от Шефа Анара»', dish:'🍲', crown:true,
+      ingredients:['зирвак на огне','рис, баранина, шафран','терпение','и один секрет, который он не выдаёт'] },
+    { fr:'Le Fumé', name:'«Дымный курс»', dish:'💨',
+      ingredients:['1 чаша кальяна','облако на двоих','сигара','разговор до трёх ночи'] },
+    { fr:'La Nuit · дижестив', name:'«Ночная прогулка»', dish:'🌃',
+      ingredients:['пустые улицы','неон','музыка в наушниках','мысли, разложенные по полочкам'] },
+    { fr:'Le Sauna', name:'«Жар»', dish:'♨️',
+      ingredients:['пар','веник по желанию','контрастный душ','полная перезагрузка'] },
+    { fr:"Voyage d'Asie", name:'«Тайский стрит-фуд»', dish:'🍜',
+      ingredients:['том ям','манго-стики-райс','найт-маркет Бангкока','билет в один конец (шутка… или нет)'] },
+    { fr:"L'IcePub · пейринг", name:'Пейринг', dish:'🍺',
+      ingredients:['бокал в его любимом IcePub','проверенная компания','«ну, ещё по одной»','Hoegaarden'] }
+  ];
+
+  const grid = document.getElementById('coursesGrid');
+  COURSES.forEach(function(c, i){
+    const flipSide = i % 2 === 1;
+    const row = document.createElement('div');
+    row.className = 'course' + (flipSide ? ' flip-side' : '');
+
+    const num = String(i + 1).padStart(2, '0');
+
+    // meta column
+    const meta = document.createElement('div');
+    meta.className = 'course-meta reveal';
+    meta.innerHTML =
+      '<span class="course-num">Plat ' + num + '</span>' +
+      '<div class="course-fr">' + c.fr + '</div>' +
+      '<div class="course-name">' + c.name + '</div>' +
+      '<div class="course-note">Лицевая сторона — блюдо. Переверни карточку, чтобы увидеть, из чего оно собрано.' +
+        (c.crown ? '<br><span class="crown">★ коронное блюдо</span>' : '') +
+      '</div>';
+
+    // flip card column
+    const flip = document.createElement('div');
+    flip.className = 'flip reveal' + (c.crown ? ' is-crown' : '');
+    flip.setAttribute('role', 'button');
+    flip.setAttribute('tabindex', '0');
+    flip.setAttribute('aria-label', c.fr + ' ' + c.name + ' — переверни карточку');
+
+    const ingList = c.ingredients.map(function(x){ return '<li>' + x + '</li>'; }).join('');
+    const flambe = c.crown
+      ? '<div class="flambe"><span class="flame f1"></span><span class="flame f2"></span><span class="flame f3"></span></div>'
+      : '';
+
+    flip.innerHTML =
+      '<div class="flip-inner">' +
+        '<div class="flip-face flip-front">' +
+          '<span class="dish-num">' + num + '</span>' +
+          flambe +
+          '<span class="dish-glow"></span>' +
+          '<span class="dish">' + c.dish + '</span>' +
+          '<span class="tap-hint">нажми — ингредиенты</span>' +
+        '</div>' +
+        '<div class="flip-face flip-back">' +
+          '<div class="ing-title">— ингредиенты —</div>' +
+          '<ul>' + ingList + '</ul>' +
+        '</div>' +
+      '</div>';
+
+    function toggle(){ flip.classList.toggle('is-flipped'); }
+    flip.addEventListener('click', toggle);
+    flip.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+
+    if (flipSide){
+      row.appendChild(flip);
+      row.appendChild(meta);
+    } else {
+      row.appendChild(meta);
+      row.appendChild(flip);
+    }
+    grid.appendChild(row);
+  });
+
+  /* ====================================================================
+     CARTE — drinks (content from SPEC §3)
+     ==================================================================== */
+  const CARTE = [
+    { name:'Чай в armudu', desc:'по-бакински, с чабрецом' },
+    { name:'Кальянная вода со льдом', desc:'vintage, по настроению' },
+    { name:'Том-ям-эспрессо', desc:'для ночных' },
+    { name:'Что покрепче', desc:'по большим праздникам' }
+  ];
+  const carte = document.getElementById('carteList');
+  CARTE.forEach(function(d){
+    const row = document.createElement('div');
+    row.className = 'carte-row';
+    row.innerHTML =
+      '<span class="carte-name">' + d.name + '</span>' +
+      '<span class="carte-dots"></span>' +
+      '<span class="carte-desc">' + d.desc + '</span>';
+    carte.appendChild(row);
+  });
+
+  /* ====================================================================
+     CUSTOM CURSOR (desktop only)
+     ==================================================================== */
+  (function(){
+    if (!window.matchMedia('(min-width:721px) and (pointer:fine)').matches) return;
+    const dot = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let rx = 0, ry = 0, x = 0, y = 0;
+    window.addEventListener('mousemove', function(e){
+      x = e.clientX; y = e.clientY;
+      dot.style.left = x + 'px'; dot.style.top = y + 'px';
+    });
+    function ringLoop(){
+      rx += (x - rx) * 0.18; ry += (y - ry) * 0.18;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(ringLoop);
+    }
+    requestAnimationFrame(ringLoop);
+    document.querySelectorAll('a,button,.flip,.cake-stage').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ ring.style.transform = 'translate(-50%,-50%) scale(1.7)'; ring.style.borderColor = 'var(--gold)'; });
+      el.addEventListener('mouseleave', function(){ ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
+    });
+  })();
+
+  /* ====================================================================
+     BACKGROUND CANVAS — drifting warm embers / spice motes
+     ==================================================================== */
+  (function(){
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0, DPR = 1, particles = [], raf = null;
+
+    function resize(){
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    const COLS = ['#e8b96b', '#b8893f', '#9e2b2b', '#f3e7d3'];
+    function makeP(){
+      return {
+        x: Math.random() * W,
+        y: H + Math.random() * H * 0.5,
+        r: 0.6 + Math.random() * 2.2,
+        vy: -(6 + Math.random() * 20),
+        vx: (Math.random() - 0.5) * 10,
+        a: 0.12 + Math.random() * 0.4,
+        col: COLS[(Math.random() * COLS.length) | 0],
+        sway: Math.random() * 6.28,
+        swaySp: 0.4 + Math.random() * 0.8
+      };
+    }
+    function init(){
+      const count = Math.round(Math.min(70, W / 22));
+      particles = [];
+      for (let i = 0; i < count; i++){ const p = makeP(); p.y = Math.random() * H; particles.push(p); }
+    }
+    let last = performance.now();
+    function frame(t){
+      raf = requestAnimationFrame(frame);
+      const dt = Math.min(0.05, (t - last) / 1000) || 0; last = t;
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < particles.length; i++){
+        const p = particles[i];
+        p.sway += dt * p.swaySp;
+        p.y += p.vy * dt;
+        p.x += (p.vx + Math.sin(p.sway) * 8) * dt;
+        if (p.y < -10){ Object.assign(p, makeP()); p.y = H + 10; }
+        ctx.beginPath();
+        ctx.fillStyle = p.col;
+        ctx.globalAlpha = p.a;
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function drawStatic(){
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < particles.length; i++){
+        const p = particles[i];
+        ctx.beginPath(); ctx.fillStyle = p.col; ctx.globalAlpha = p.a * 0.7;
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    resize(); init();
+    if (REDUCED){
+      drawStatic();
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
+    window.addEventListener('resize', function(){ resize(); init(); if (REDUCED) drawStatic(); });
+    document.addEventListener('visibilitychange', function(){
+      if (REDUCED) return;
+      if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+      else if (!raf){ last = performance.now(); raf = requestAnimationFrame(frame); }
+    });
+  })();
+
+  /* ====================================================================
+     CONFETTI on final cake
+     ==================================================================== */
+  let confettiFired = false;
+  function fireConfetti(burst){
+    if (typeof confetti !== 'function') return;
+    const colors = ['#e8b96b', '#b8893f', '#9e2b2b', '#f3e7d3', '#ffffff'];
+    if (burst){
+      confetti({ particleCount: 70, spread: 80, origin: { y: 0.55 }, colors: colors, scalar: 1.05 });
+      return;
+    }
+    confetti({ particleCount: REDUCED ? 60 : 130, spread: 100, startVelocity: 42, origin: { y: 0.6 }, colors: colors });
+    setTimeout(function(){ confetti({ particleCount: 50, angle: 60, spread: 60, origin: { x: 0, y: 0.65 }, colors: colors }); }, 180);
+    setTimeout(function(){ confetti({ particleCount: 50, angle: 120, spread: 60, origin: { x: 1, y: 0.65 }, colors: colors }); }, 320);
+  }
+  const cakeStage = document.getElementById('cakeStage');
+  cakeStage.addEventListener('click', function(){ fireConfetti(true); });
+  cakeStage.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fireConfetti(true); } });
+
+  /* ====================================================================
+     GSAP reveals + parallax (with graceful fallback)
+     ==================================================================== */
+  if (window.gsap && window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (REDUCED){
+      // reduced motion: reveal instantly, no scroll-tied fades
+      document.body.classList.add('gsap-off');
+    } else {
+      gsap.utils.toArray('.reveal').forEach(function(el){
+        gsap.fromTo(el,
+          { opacity: 0, y: 34 },
+          {
+            opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+          }
+        );
+      });
+    }
+
+    // hero plate subtle parallax
+    if (!REDUCED){
+      gsap.to('#heroPlate', {
+        yPercent: 18, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+      gsap.to('.hero h1', {
+        yPercent: 12, opacity: 0.55, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+    }
+
+    // final cake reveal triggers confetti once
+    ScrollTrigger.create({
+      trigger: '#gateau',
+      start: 'top 60%',
+      once: true,
+      onEnter: function(){ if (!confettiFired){ confettiFired = true; fireConfetti(false); } }
+    });
+  } else {
+    // GSAP failed to load — show everything
+    document.body.classList.add('gsap-off');
+    // still fire confetti when the cake scrolls into view
+    const obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting && !confettiFired){ confettiFired = true; fireConfetti(false); obs.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    const g = document.getElementById('gateau');
+    if (g) obs.observe(g);
+  }
+
+  /* ====================================================================
+     KONAMI CODE → Anar Quest
+     ==================================================================== */
+  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let kIdx = 0;
+  window.addEventListener('keydown', function(e){
+    const k = (e.key.length === 1) ? e.key.toLowerCase() : e.key;
+    if (k === KONAMI[kIdx]){
+      kIdx++;
+      if (kIdx === KONAMI.length){
+        kIdx = 0;
+        if (window.AnarQuest && AnarQuest.open) AnarQuest.open();
+      }
+    } else {
+      kIdx = (k === KONAMI[0]) ? 1 : 0;
+    }
+  });
+
+  /* ====================================================================
+     ANAR QUEST init (theme per SPEC §6, v2 Şef Anar)
+     ==================================================================== */
+  function initQuest(){
+    if (!window.AnarQuest) return;
+    AnarQuest.init({
+      id:'shef', title:'ANAR QUEST · Кухня',
+      bg1:'#211a12', bg2:'#3a2c18', ground:'#1a130c', sky:'#2a2014',
+      accent:'#e8b96b', accent2:'#9e2b2b',
+      player:'🧑‍🍳', collectibles:['🍲','🥘','🍮','🌶️'], obstacle:'🔪', goal:'🎂'
+    });
+  }
+
+  /* === ANAR QUEST engine (inlined from _build/anar-quest.js) === */
+  /* =====================================================================
+     ANAR QUEST — self-contained mini-game (shared across all 4 sites)
+     ===================================================================== */
+  window.AnarQuest = (function () {
+    'use strict';
+
+    var theme = null;
+    var root, btn, canvas, ctx;
+    var W = 0, H = 0, DPR = 1;
+    var raf = null, last = 0;
+    var state = 'ready'; // 'ready' | 'playing' | 'win'
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    // world
+    var groundY, playerSize, baseSpeed, speed, distance, goalDist;
+    var player, entities, confetti, score, shake, stumble, goalSpawned, goalEnt;
+    var spawnObstacleAt, spawnCollectAt;
+
+    function injectStyles() {
+      if (document.getElementById('aq-style')) return;
+      var s = document.createElement('style');
+      s.id = 'aq-style';
+      s.textContent =
+        '.aq-overlay{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;background:rgba(4,4,8,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}' +
+        '.aq-overlay.aq-open{display:flex;}' +
+        '.aq-stage{position:relative;width:min(960px,96vw);height:min(560px,82vh);border-radius:16px;overflow:hidden;box-shadow:0 30px 90px -20px rgba(0,0,0,.8);}' +
+        '.aq-stage canvas{display:block;width:100%;height:100%;touch-action:none;}' +
+        '.aq-close{position:absolute;top:10px;right:12px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#fff;font:600 20px/40px system-ui,sans-serif;text-align:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;}' +
+        '.aq-close:hover{background:rgba(0,0,0,.7);}' +
+        '.aq-fab{position:fixed;right:18px;bottom:18px;z-index:1000;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;font-size:24px;line-height:54px;text-align:center;color:#0a0a0a;box-shadow:0 8px 24px -6px rgba(0,0,0,.6);transition:transform .25s ease, box-shadow .25s ease;-webkit-tap-highlight-color:transparent;padding:0;}' +
+        '.aq-fab:hover{transform:translateY(-3px) rotate(-8deg);}' +
+        '@media (max-width:520px){.aq-fab{width:48px;height:48px;font-size:21px;line-height:48px;right:14px;bottom:14px;}}';
+      document.head.appendChild(s);
+    }
+
+    function buildDom() {
+      root = document.createElement('div');
+      root.className = 'aq-overlay';
+      root.setAttribute('aria-hidden', 'true');
+      var stage = document.createElement('div');
+      stage.className = 'aq-stage';
+      canvas = document.createElement('canvas');
+      var close = document.createElement('button');
+      close.className = 'aq-close';
+      close.innerHTML = '&times;';
+      close.setAttribute('aria-label', 'Закрыть игру');
+      close.addEventListener('click', api.close);
+      stage.appendChild(canvas);
+      stage.appendChild(close);
+      root.appendChild(stage);
+      root.addEventListener('click', function (e) { if (e.target === root) api.close(); });
+      document.body.appendChild(root);
+      ctx = canvas.getContext('2d');
+
+      btn = document.createElement('button');
+      btn.className = 'aq-fab';
+      btn.textContent = '🎮';
+      btn.title = 'Anar Quest';
+      btn.setAttribute('aria-label', 'Открыть мини-игру Anar Quest');
+      btn.style.background = theme.accent || '#ffce00';
+      btn.addEventListener('click', api.open);
+      document.body.appendChild(btn);
+    }
+
+    function resize() {
+      var stage = canvas.parentElement;
+      var r = stage.getBoundingClientRect();
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.max(320, r.width);
+      H = Math.max(240, r.height);
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      groundY = H * 0.82;
+      playerSize = Math.max(34, Math.min(64, H * 0.11));
+      baseSpeed = Math.max(260, W * 0.42); // px/sec
+      if (player) player.y = Math.min(player.y, groundY);
+    }
+
+    function reset() {
+      score = 0;
+      distance = 0;
+      goalDist = 8200;
+      speed = baseSpeed;
+      shake = 0;
+      stumble = 0;
+      goalSpawned = false;
+      goalEnt = null;
+      entities = [];
+      confetti = [];
+      player = { x: W * 0.2, y: groundY, vy: 0, size: playerSize, onGround: true, bob: 0 };
+      spawnObstacleAt = 900;
+      spawnCollectAt = 480;
+    }
+
+    function jump() {
+      if (state === 'ready') { state = 'playing'; return; }
+      if (state === 'win') { restart(); return; }
+      if (player.onGround) {
+        player.vy = -Math.sqrt(2 * 2600 * (groundY * 0.42)); // reach ~42% of ground height
+        player.onGround = false;
+      }
+    }
+
+    function restart() { reset(); state = 'playing'; }
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    function spawn() {
+      if (goalSpawned) return;
+      if (distance >= spawnCollectAt) {
+        spawnCollectAt = distance + rnd(520, 980);
+        var high = Math.random() < 0.5;
+        entities.push({
+          type: 'coin', x: W + 40,
+          y: high ? groundY - playerSize * rnd(1.4, 2.2) : groundY - playerSize * 0.5,
+          size: playerSize * 0.8,
+          emoji: theme.collectibles[(Math.random() * theme.collectibles.length) | 0],
+          dead: false
+        });
+      }
+      if (distance >= spawnObstacleAt) {
+        spawnObstacleAt = distance + rnd(1100, 1900);
+        entities.push({
+          type: 'rock', x: W + 40, y: groundY,
+          size: playerSize * rnd(0.7, 0.95),
+          emoji: theme.obstacle, hit: false
+        });
+      }
+    }
+
+    function overlap(ax, ay, ar, bx, by, br) {
+      var dx = ax - bx, dy = ay - by, rr = ar + br;
+      return dx * dx + dy * dy < rr * rr;
+    }
+
+    function update(dt) {
+      // speed ramps a touch over the run
+      speed = baseSpeed * (1 + Math.min(distance / goalDist, 1) * 0.45);
+      var eff = stumble > 0 ? speed * 0.45 : speed;
+      if (stumble > 0) stumble -= dt;
+      distance += eff * dt;
+
+      // player physics
+      player.vy += 2600 * dt;
+      player.y += player.vy * dt;
+      if (player.y >= groundY) { player.y = groundY; player.vy = 0; player.onGround = true; }
+      player.bob += dt * (player.onGround ? 12 : 0);
+
+      spawn();
+
+      // goal
+      if (!goalSpawned && distance >= goalDist) {
+        goalSpawned = true;
+        goalEnt = { type: 'goal', x: W + 60, y: groundY, size: playerSize * 1.5, emoji: theme.goal };
+        entities.push(goalEnt);
+      }
+
+      var pr = player.size * 0.42;
+      for (var i = entities.length - 1; i >= 0; i--) {
+        var e = entities[i];
+        e.x -= eff * dt;
+        var er = e.size * 0.40;
+        if (!e.dead && overlap(player.x, player.y - player.size * 0.4, pr, e.x, e.y - e.size * 0.4, er)) {
+          if (e.type === 'coin') { e.dead = true; score += 10; popConfetti(e.x, e.y, 8); }
+          else if (e.type === 'rock' && !e.hit) { e.hit = true; stumble = 0.35; shake = 8; }
+          else if (e.type === 'goal') { win(); }
+        }
+        if (e.x < -80) entities.splice(i, 1);
+      }
+
+      if (shake > 0) shake -= dt * 40;
+
+      // confetti
+      for (var c = confetti.length - 1; c >= 0; c--) {
+        var p = confetti[c];
+        p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+        if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+      }
+    }
+
+    function popConfetti(x, y, n) {
+      var cols = [theme.accent, theme.accent2, '#ffffff', '#ffd166'];
+      for (var i = 0; i < n; i++) {
+        confetti.push({
+          x: x, y: y, vx: rnd(-160, 160), vy: rnd(-260, -40),
+          size: rnd(5, 10), life: rnd(0.8, 1.6), rot: rnd(0, 6.28), vr: rnd(-8, 8),
+          col: cols[(Math.random() * cols.length) | 0]
+        });
+      }
+    }
+
+    function win() {
+      if (state === 'win') return;
+      state = 'win';
+      for (var i = 0; i < 70; i++) popConfetti(rnd(0, W), rnd(-20, H * 0.3), 1);
+    }
+
+    function drawBg() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, theme.sky || theme.bg1);
+      g.addColorStop(1, theme.bg2 || theme.bg1);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      // distant glow
+      if (!reduced) {
+        var gx = (1 - (distance % 4000) / 4000) * W;
+        var rg = ctx.createRadialGradient(gx, H * 0.4, 0, gx, H * 0.4, H * 0.6);
+        rg.addColorStop(0, hexA(theme.accent, 0.16));
+        rg.addColorStop(1, hexA(theme.accent, 0));
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+      }
+      // ground
+      ctx.fillStyle = theme.ground || '#111';
+      ctx.fillRect(0, groundY + player.size * 0.1, W, H - groundY);
+      // ground speed stripes
+      ctx.fillStyle = hexA(theme.accent, 0.18);
+      var stripeW = 46, off = (distance % stripeW);
+      for (var x = -off; x < W; x += stripeW) ctx.fillRect(x, groundY + player.size * 0.1, 22, 4);
+    }
+
+    function emoji(ch, x, y, size) {
+      ctx.font = size + 'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(ch, x, y);
+    }
+
+    function draw() {
+      var sx = shake > 0 ? rnd(-shake, shake) : 0;
+      ctx.save();
+      ctx.translate(sx, 0);
+      drawBg();
+      // entities
+      for (var i = 0; i < entities.length; i++) {
+        var e = entities[i];
+        if (e.dead) continue;
+        var by = e.type === 'coin' && !reduced ? Math.sin(distance / 220 + e.x) * 4 : 0;
+        emoji(e.emoji, e.x, e.y - e.size * 0.4 + by, e.size);
+      }
+      // player
+      ctx.save();
+      ctx.translate(player.x, player.y - player.size * 0.4);
+      ctx.rotate(Math.sin(player.bob) * (player.onGround ? 0.06 : 0) + (player.onGround ? 0 : 0.12));
+      emoji(theme.player, 0, 0, player.size);
+      ctx.restore();
+      // HUD
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '600 16px system-ui,sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('★ ' + score, 16, 14);
+      // progress bar
+      var pw = W - 32, pp = Math.min(distance / goalDist, 1);
+      ctx.fillStyle = hexA('#ffffff', 0.15); ctx.fillRect(16, 40, pw, 6);
+      ctx.fillStyle = theme.accent || '#fff'; ctx.fillRect(16, 40, pw * pp, 6);
+      emoji('🎂', 16 + pw, 43, 18);
+      // confetti
+      for (var c = 0; c < confetti.length; c++) {
+        var p = confetti[c];
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
+      }
+      ctx.restore();
+
+      if (state === 'ready') overlayText(theme.title || 'ANAR QUEST',
+        'Тап / Space — прыжок. Доберись до торта 🎂', '▶ тап, чтобы начать');
+      if (state === 'win') overlayText('Ad günün mübarək, Анар! 🎉',
+        'Очки: ' + score + ' · Çox yaşa!', 'тап — сыграть ещё раз');
+    }
+
+    function overlayText(title, sub, hint) {
+      ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(0, 0, W, H);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '700 ' + Math.round(Math.min(34, W * 0.06)) + 'px system-ui,sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(title, W / 2, H * 0.4);
+      ctx.fillStyle = '#fff';
+      ctx.font = '500 ' + Math.round(Math.min(18, W * 0.034)) + 'px system-ui,sans-serif';
+      ctx.fillText(sub, W / 2, H * 0.4 + 38);
+      ctx.fillStyle = hexA('#ffffff', 0.7);
+      ctx.font = '500 14px system-ui,sans-serif';
+      ctx.fillText(hint, W / 2, H * 0.4 + 72);
+    }
+
+    function loop(t) {
+      raf = requestAnimationFrame(loop);
+      var dt = Math.min(0.05, (t - last) / 1000) || 0; last = t;
+      if (state === 'playing') update(dt);
+      else {
+        // idle: keep confetti + slow drift alive
+        for (var c = confetti.length - 1; c >= 0; c--) {
+          var p = confetti[c]; p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+          if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+        }
+      }
+      draw();
+    }
+
+    function hexA(hex, a) {
+      if (!hex) return 'rgba(255,255,255,' + a + ')';
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      var n = parseInt(hex, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+
+    // input
+    function onKey(e) {
+      if (!root.classList.contains('aq-open')) return;
+      if (e.key === 'Escape') { api.close(); return; }
+      if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Spacebar') { e.preventDefault(); jump(); }
+    }
+
+    var api = {
+      init: function (t) {
+        theme = t || {};
+        if (!theme.collectibles || !theme.collectibles.length) theme.collectibles = ['⭐'];
+        injectStyles();
+        buildDom();
+        resize();
+        reset();
+        window.addEventListener('resize', function () { if (root.classList.contains('aq-open')) resize(); });
+        document.addEventListener('keydown', onKey);
+        canvas.addEventListener('pointerdown', function (e) { e.preventDefault(); jump(); });
+        return api;
+      },
+      open: function () {
+        if (!root) return;
+        root.classList.add('aq-open');
+        root.setAttribute('aria-hidden', 'false');
+        resize(); reset(); state = 'ready';
+        last = performance.now();
+        if (!raf) raf = requestAnimationFrame(loop);
+      },
+      close: function () {
+        if (!root) return;
+        root.classList.remove('aq-open');
+        root.setAttribute('aria-hidden', 'true');
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+      }
+    };
+    return api;
+  })();
+
+  /* fire up the quest (creates overlay + 🎮 fab) */
+  initQuest();
+
+})();
+</script>
+</body>
+</html>

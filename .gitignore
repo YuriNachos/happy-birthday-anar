@@ -1,0 +1,6 @@
+# OS noise
+.DS_Store
+**/.DS_Store
+
+# build-only working files (specs, helpers — not part of the deployed site)
+_build/

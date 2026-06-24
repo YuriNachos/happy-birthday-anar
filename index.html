@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>🔥 Вселенная Анара — выбери свой мир</title>
+<meta name="description" content="4 одно-страничных скролл-привітання для Анара. Выбери свою вселенную." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --bg:#0a0810;
+    --bg2:#15101c;
+    --fg:#efe7dd;
+    --muted:#9a8d83;
+    --ember:#ff6a2b;
+    --gold:#d4af37;
+    --nar:#e0224b;
+    --teal:#1fe0c5;
+    --magenta:#ff3d9a;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --sans:'Manrope',-apple-system,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  }
+  html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+  body{
+    background:
+      radial-gradient(ellipse at 18% 0%, rgba(255,106,43,.16), transparent 55%),
+      radial-gradient(ellipse at 82% 100%, rgba(224,34,75,.14), transparent 55%),
+      radial-gradient(ellipse at 50% 50%, rgba(212,175,55,.06), transparent 70%),
+      var(--bg);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:rgba(212,175,55,.3);color:#fff;}
+
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+    background:radial-gradient(ellipse at center, transparent 0%, transparent 55%, rgba(10,8,16,.7) 100%);}
+
+  main{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:clamp(24px,5vw,64px) clamp(18px,4vw,48px);}
+
+  header.hero{text-align:center;padding:clamp(40px,9vh,110px) 0 clamp(26px,6vh,64px);}
+  .pre{font-family:var(--mono);font-size:clamp(10px,1.2vw,13px);letter-spacing:.38em;color:var(--ember);text-transform:uppercase;margin-bottom:18px;}
+  .pre::before{content:'// ';color:var(--muted);}
+  h1{
+    font-family:var(--serif);font-weight:600;font-size:clamp(44px,10vw,118px);line-height:.95;letter-spacing:-.01em;
+    background:linear-gradient(92deg,#fff 0%,var(--gold) 30%,var(--ember) 60%,var(--nar) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;background-size:240% 100%;
+    animation:shift 12s ease-in-out infinite;
+  }
+  @keyframes shift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+  h1 small{display:block;font-family:var(--mono);font-weight:400;font-size:clamp(13px,2.4vw,22px);letter-spacing:.32em;
+    color:var(--gold);margin-top:14px;text-transform:uppercase;-webkit-text-fill-color:var(--gold);}
+  .subtitle{margin:22px auto 0;color:var(--muted);font-size:clamp(14px,1.6vw,18px);max-width:620px;line-height:1.65;}
+  .subtitle em{color:var(--fg);font-style:italic;font-family:var(--serif);}
+  .meta{margin-top:18px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;}
+  .meta span{color:var(--ember);}
+  .hint{display:inline-flex;align-items:center;gap:8px;margin-top:26px;padding:8px 14px;border:1px solid rgba(255,255,255,.1);
+    border-radius:999px;font-family:var(--mono);font-size:11px;color:var(--muted);background:rgba(255,255,255,.03);}
+  .hint::before{content:'↓';color:var(--ember);animation:bob 1.6s ease-in-out infinite;}
+  @keyframes bob{50%{transform:translateY(3px);}}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:clamp(22px,5vh,46px);}
+
+  .card{position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:248px;
+    padding:clamp(20px,2.4vw,28px);border:1px solid rgba(255,255,255,.08);border-radius:18px;
+    background:rgba(22,18,30,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden;
+    text-decoration:none;color:var(--fg);isolation:isolate;
+    transition:transform .45s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .4s;}
+  .card::before{content:'';position:absolute;inset:-2px;border-radius:20px;z-index:-1;opacity:0;filter:blur(16px);
+    background:linear-gradient(135deg,var(--c1),var(--c2));transition:opacity .35s;}
+  .card:hover,.card:focus-visible{transform:translateY(-6px);border-color:rgba(255,255,255,.18);box-shadow:0 22px 54px -22px rgba(0,0,0,.7);}
+  .card:hover::before,.card:focus-visible::before{opacity:.5;}
+  .card-emoji{position:absolute;top:14px;right:18px;font-size:clamp(40px,5vw,54px);line-height:1;
+    filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+  .card:hover .card-emoji{transform:rotate(-8deg) scale(1.14);}
+  .card-num{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.28em;}
+  .card-num span{color:var(--c1);}
+  .card-title{font-family:var(--serif);font-weight:600;font-size:clamp(24px,2.6vw,32px);margin-top:8px;line-height:1.05;color:#fff;}
+  .card-title em{font-style:italic;color:var(--c1);}
+  .card-desc{margin-top:12px;color:var(--muted);font-size:14px;line-height:1.55;}
+  .card-stack{margin-top:18px;display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{font-family:var(--mono);font-size:10px;color:var(--muted);padding:3px 8px;border:1px solid rgba(255,255,255,.08);border-radius:999px;letter-spacing:.04em;}
+  .tag.hot{color:var(--c1);border-color:color-mix(in srgb,var(--c1) 42%,transparent);}
+  .card-cta{margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--c1);letter-spacing:.08em;display:flex;align-items:center;gap:8px;}
+  .card-cta::after{content:'→';transition:transform .3s;}
+  .card:hover .card-cta::after{transform:translateX(6px);}
+
+  .c-1{--c1:#ff6a2b;--c2:#d4af37;}
+  .c-2{--c1:#e8b96b;--c2:#9e2b2b;}
+  .c-3{--c1:#1fe0c5;--c2:#ff3d9a;}
+  .c-4{--c1:#d4af37;--c2:#7a1f2b;}
+
+  .mid{margin:clamp(34px,6vh,60px) 0 clamp(14px,3vh,26px);display:flex;align-items:center;gap:16px;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.3em;text-transform:uppercase;}
+  .mid::before,.mid::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+
+  footer{margin-top:clamp(40px,9vh,84px);padding-top:30px;border-top:1px solid rgba(255,255,255,.06);text-align:center;
+    font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.1em;}
+  footer .heart{color:var(--nar);}
+  footer a{color:var(--ember);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  footer .az{margin-top:8px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold);letter-spacing:0;}
+
+  .float{position:fixed;pointer-events:none;z-index:0;opacity:.16;animation:drift linear infinite;}
+  @keyframes drift{from{transform:translateY(110vh) rotate(0deg);}to{transform:translateY(-20vh) rotate(360deg);}}
+
+  @media (prefers-reduced-motion: reduce){
+    h1{animation:none;}.float{display:none;}.hint::before{animation:none;}
+  }
+  @media (max-width:560px){.card{min-height:210px;}.card-emoji{font-size:38px;}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<main>
+  <header class="hero">
+    <div class="pre">odlar yurdu — выбери свой огонь</div>
+    <h1>Вселенная Анара<small>Anarın aləmi</small></h1>
+    <p class="subtitle">
+      Четыре отдельных мира. Один именинник. Пролистай вниз и выбери стиль —
+      от <em>Земли Огня</em> до неонового Вьетнама. В каждом мире спрятана мини-игра 🎮.
+    </p>
+    <p class="meta">огонь · дым · ночь · жар · <span>made with 🔥 by Юра</span></p>
+    <div class="hint">листай и выбери свой мир</div>
+  </header>
+
+  <section class="grid" aria-label="Варианты сайтов">
+
+    <a class="card c-1" href="v1-odlar-yurdu/" data-variant="1">
+      <div class="card-emoji" aria-hidden="true">🔥</div>
+      <div>
+        <div class="card-num">МИР <span>01</span> · НАСЛЕДИЕ</div>
+        <h2 class="card-title">Odlar Yurdu · <em>Земля Огня</em></h2>
+        <p class="card-desc">Имя из углей, орнамент-бута, гранат как символ. Пять стихий — кухня, дым, ночь, жар, тропики. Самый личный.</p>
+      </div>
+      <div>
+        <div class="card-stack"><span class="tag hot">canvas-огонь</span><span class="tag">бута</span><span class="tag">гранат</span><span class="tag">азерб.</span></div>
+        <div class="card-cta">войти в огонь</div>
+      </div>
+    </a>
+
+    <a class="card c-2" href="v2-shef-anar/" data-variant="2">
+      <div class="card-emoji" aria-hidden="true">🍲</div>
+      <div>
+        <div class="card-num">МИР <span>02</span> · МЕНЮ</div>
+        <h2 class="card-title">Şef Anar · <em>дегустация</em></h2>
+        <p class="card-desc">Тёмное кинематографичное меню, где каждое блюдо — факт о тебе. Flip-карточки, плов на огне, финальный торт.</p>
+      </div>
+      <div>
+        <div class="card-stack"><span class="tag hot">flip-карточки</span><span class="tag">flambé</span><span class="tag">конфетти</span><span class="tag">готовка</span></div>
+        <div class="card-cta">сесть за стол</div>
+      </div>
+    </a>
+
+    <a class="card c-3" href="v3-gece-night/" data-variant="3">
+      <div class="card-emoji" aria-hidden="true">🌃</div>
+      <div>
+        <div class="card-num">МИР <span>03</span> · НЕОН</div>
+        <h2 class="card-title">Gecə · <em>ночной неон</em></h2>
+        <p class="card-desc">Прогулка Баку → Вьетнам. Ожившая вывеска IcePub, неоновые отражения на мокром асфальте, фонарики Хойана.</p>
+      </div>
+      <div>
+        <div class="card-stack"><span class="tag hot">неон</span><span class="tag">боке</span><span class="tag">IcePub</span><span class="tag">Вьетнам</span></div>
+        <div class="card-cta">выйти гулять</div>
+      </div>
+    </a>
+
+    <a class="card c-4" href="v4-smoke-embers/" data-variant="4">
+      <div class="card-emoji" aria-hidden="true">💨</div>
+      <div>
+        <div class="card-num">МИР <span>04</span> · ЛАУНЖ</div>
+        <h2 class="card-title">Tüstü · <em>Smoke &amp; Embers</em></h2>
+        <p class="card-desc">Кальянно-сигарный лаунж имени Анара. Дым на фоне, догорающая сигара-прогресс и девять тостов в стиле тамады.</p>
+      </div>
+      <div>
+        <div class="card-stack"><span class="tag hot">дым</span><span class="tag">тосты</span><span class="tag">сигара</span><span class="tag">çayxana</span></div>
+        <div class="card-cta">зайти в лаунж</div>
+      </div>
+    </a>
+
+  </section>
+
+  <div class="mid">все четыре — про тебя · Ad günün mübarək</div>
+
+  <footer>
+    <div>// сделано с <span class="heart">🔥</span> <a href="https://github.com/YuriNachos">Юрой</a> · для Анара</div>
+    <div class="az">Çox yaşa, qardaş!</div>
+    <div style="margin-top:8px;opacity:.55;">vanilla HTML · GSAP · canvas · zero build · zero tracking</div>
+  </footer>
+</main>
+
+<script>
+  // floating embers / ambience
+  (function(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var emojis = ['🔥','🍲','💨','🌴','🚬','🍺','🎂','✨','🪔','🌶️'];
+    for (var i=0;i<16;i++){
+      var e=document.createElement('div');
+      e.className='float';
+      e.textContent=emojis[(Math.random()*emojis.length)|0];
+      e.style.left=(Math.random()*100)+'vw';
+      e.style.fontSize=(12+Math.random()*22)+'px';
+      var d=18+Math.random()*22;
+      e.style.animationDuration=d+'s';
+      e.style.animationDelay=(-Math.random()*d)+'s';
+      document.body.appendChild(e);
+    }
+  })();
+
+  // console signature
+  console.log(
+    '%c🔥 ВСЕЛЕННАЯ АНАРА %c\n'+
+    '%cЕсли ты это читаешь — ты нашёл меню. Выбери любой из четырёх миров.\n'+
+    '   Все они — про тебя. Ad günün mübarək, Анар! — Юра',
+    'background:linear-gradient(90deg,#ff6a2b,#e0224b);color:#000;font:700 18px Georgia;padding:10px 14px;border-radius:6px;',
+    '',
+    'color:#9a8d83;font:13px monospace;line-height:1.6;'
+  );
+
+  // keys 1..4 jump to a world
+  document.addEventListener('keydown', function(e){
+    if (/^[1-4]$/.test(e.key)){
+      var card=document.querySelector('[data-variant="'+e.key+'"]');
+      if (card){ card.style.outline='2px solid var(--ember)'; setTimeout(function(){location.href=card.getAttribute('href');},160); }
+    }
+  });
+</script>
+</body>
+</html>

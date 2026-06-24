@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Odlar Yurdu · Анар</title>
+<meta name="description" content="Земля Огня — поздравление для Анара. Ad günün mübarək!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0a0f; --bg2:#14101a;
+  --ember:#ff6a2b; --gold:#d4af37; --nar:#b3122e; --emerald:#0f5e54; --ash:#ece7df;
+  --ashdim:rgba(236,231,223,.62);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--ash);
+  font-family:var(--sans);
+  font-weight:400;
+  line-height:1.65;
+  overflow-x:hidden;
+  position:relative;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+/* vignette */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(255,106,43,.10), transparent 55%),
+    radial-gradient(100% 100% at 50% 120%, rgba(179,18,46,.12), transparent 60%),
+    radial-gradient(140% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.72) 100%);
+}
+img{max-width:100%;display:block}
+
+/* ember canvas behind everything */
+#ember{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  width:100%; height:100%;
+}
+
+/* custom ember cursor — desktop only */
+#cursor{display:none}
+@media (min-width:721px) and (pointer:fine){
+  body{cursor:none}
+  a,button,.flip,.q-card{cursor:none}
+  #cursor{
+    display:block; position:fixed; top:0; left:0; z-index:9998; pointer-events:none;
+    width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%;
+    background:radial-gradient(circle, #ffd27a 0%, var(--ember) 45%, rgba(255,106,43,0) 72%);
+    mix-blend-mode:screen;
+    box-shadow:0 0 18px 6px rgba(255,106,43,.55);
+    transition:transform .12s ease, opacity .2s ease;
+    will-change:transform;
+  }
+  #cursor.tap{transform:scale(1.9)}
+}
+
+/* layout */
+main{position:relative; z-index:2}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,64px)}
+section{position:relative; padding:clamp(64px,11vh,140px) 0}
+
+/* nav buttons */
+.nav-back,.nav-flag{
+  position:fixed; top:max(14px,env(safe-area-inset-top)); z-index:50;
+  font-family:var(--mono); font-size:13px; letter-spacing:.04em;
+  text-decoration:none; color:var(--ash);
+  padding:9px 14px; min-height:44px; display:inline-flex; align-items:center; gap:8px;
+  border:1px solid rgba(212,175,55,.32);
+  border-radius:999px;
+  background:rgba(20,16,26,.55);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  transition:border-color .25s ease, transform .25s ease, color .25s ease;
+}
+.nav-back{left:max(14px,env(safe-area-inset-left))}
+.nav-flag{right:calc(max(14px,env(safe-area-inset-right)) + 64px); border-color:rgba(255,106,43,.3); pointer-events:none}
+.nav-back:hover{border-color:var(--gold); color:var(--gold); transform:translateY(-1px)}
+@media (max-width:540px){ .nav-flag{display:none} }
+
+/* HERO */
+.hero{min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding-top:clamp(70px,12vh,120px)}
+.hero .eyebrow{
+  font-family:var(--mono); font-size:clamp(11px,2.6vw,14px); letter-spacing:.42em;
+  text-transform:uppercase; color:var(--gold); opacity:.92; margin-bottom:clamp(16px,3vh,30px);
+}
+.hero h1{
+  font-family:var(--serif); font-weight:600; font-style:italic;
+  font-size:clamp(72px,26vw,260px); line-height:.92; letter-spacing:.01em;
+  color:#fff; position:relative;
+  background:linear-gradient(180deg,#ffe7c2 0%, var(--ember) 48%, var(--nar) 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  text-shadow:0 0 1px rgba(255,106,43,.0);
+  filter:drop-shadow(0 6px 30px rgba(255,106,43,.45)) drop-shadow(0 0 70px rgba(179,18,46,.35));
+  will-change:transform;
+}
+.hero .sub{
+  font-family:var(--serif); font-style:italic; font-size:clamp(18px,4.4vw,30px);
+  color:var(--ash); margin-top:clamp(14px,3vh,26px); max-width:24ch;
+}
+.hero .sub b{color:var(--gold); font-style:normal; font-weight:600}
+.scroll-hint{
+  position:absolute; bottom:clamp(22px,5vh,46px); left:50%; transform:translateX(-50%);
+  font-family:var(--mono); font-size:12px; letter-spacing:.22em; color:var(--ashdim);
+  text-transform:uppercase; display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.scroll-hint .arrow{font-size:18px; animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(7px);opacity:1}}
+
+/* generic section heads */
+.kicker{
+  font-family:var(--mono); font-size:13px; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--ember); margin-bottom:18px; display:inline-block;
+}
+.h2{
+  font-family:var(--serif); font-weight:600; font-size:clamp(34px,7vw,72px); line-height:1.02;
+  color:#fff; margin-bottom:22px;
+}
+.h2 em{font-style:italic; color:var(--gold)}
+.lead{font-size:clamp(16px,2.4vw,21px); color:var(--ash); max-width:62ch; line-height:1.7}
+.lead b{color:var(--gold); font-weight:600}
+.lead em{color:var(--ember); font-style:italic}
+
+/* glass card */
+.glass{
+  background:linear-gradient(160deg, rgba(236,231,223,.07), rgba(236,231,223,.02));
+  border:1px solid rgba(212,175,55,.22);
+  border-radius:22px;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 70px -34px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* NAR section */
+.nar-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(30px,6vw,72px); align-items:center}
+.nar-art{position:relative; display:flex; align-items:center; justify-content:center; min-height:280px}
+.nar-svg{width:min(380px,80%); height:auto; filter:drop-shadow(0 10px 40px rgba(179,18,46,.5))}
+.seed{transform-origin:center; animation:seedglow 3.2s ease-in-out infinite}
+.seed:nth-child(2n){animation-delay:.5s}
+.seed:nth-child(3n){animation-delay:1.1s}
+.seed:nth-child(4n){animation-delay:1.7s}
+@keyframes seedglow{0%,100%{opacity:.78}50%{opacity:1; filter:brightness(1.35)}}
+
+/* BUTA section */
+.buta-wrap{display:flex; flex-direction:column; align-items:center; text-align:center}
+.buta-svg{width:min(260px,62vw); height:auto; margin:clamp(26px,5vh,48px) 0 0}
+.buta-path{
+  fill:none; stroke:var(--gold); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+  filter:drop-shadow(0 0 14px rgba(255,106,43,.55));
+}
+.buta-fill{fill:rgba(255,106,43,.08); stroke:none}
+
+/* ELEMENTS list */
+.elements{display:flex; flex-direction:column; gap:clamp(22px,4vh,40px)}
+.element{
+  display:grid; grid-template-columns:auto 1fr; gap:clamp(20px,4vw,44px); align-items:center;
+  padding:clamp(24px,4vw,40px);
+}
+.element .num{
+  font-family:var(--serif); font-style:italic; font-weight:600;
+  font-size:clamp(54px,12vw,128px); line-height:.8;
+  background:linear-gradient(180deg, var(--gold), var(--ember));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 22px rgba(255,106,43,.35));
+}
+.element .body .el-title{
+  font-family:var(--serif); font-weight:600; font-size:clamp(24px,4.6vw,40px); color:#fff;
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px;
+}
+.element .body .el-ico{font-size:clamp(22px,4vw,34px)}
+.element .body p{color:var(--ash); font-size:clamp(15px,2.2vw,18px); line-height:1.66; max-width:60ch}
+.element .body .el-name{color:var(--gold)}
+
+/* BAKU <-> BANGKOK */
+.bridge-svg{width:100%; height:auto; max-height:240px; opacity:.9}
+.bridge-svg .sk{fill:none; stroke:var(--gold); stroke-width:2; opacity:.85}
+.bridge-svg .glow{fill:rgba(255,106,43,.06)}
+.bb-grid{display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(28px,5vw,56px); align-items:center; margin-top:clamp(30px,5vh,52px)}
+.portrait{
+  position:relative; border-radius:20px; overflow:hidden; isolation:isolate;
+  box-shadow:0 30px 80px -30px rgba(179,18,46,.6);
+}
+.portrait img{width:100%; height:auto; display:block}
+.portrait::after{
+  content:""; position:absolute; inset:0; border-radius:20px; pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(255,106,43,.4), inset 0 0 60px rgba(255,106,43,.28);
+}
+.portrait .fallback{
+  display:none; aspect-ratio:1290/1607; align-items:center; justify-content:center;
+  font-size:90px; background:linear-gradient(160deg,var(--bg2),#241018);
+}
+.portrait.is-broken img{display:none}
+.portrait.is-broken .fallback{display:flex}
+
+/* TOST quote */
+.tost{padding:clamp(34px,6vw,64px); text-align:center; max-width:880px; margin:0 auto; position:relative}
+.tost .mark{font-family:var(--serif); font-size:clamp(80px,16vw,150px); line-height:.5; color:var(--gold); opacity:.5; height:.4em; display:block}
+.tost blockquote{
+  font-family:var(--serif); font-style:italic; font-weight:400;
+  font-size:clamp(21px,3.6vw,34px); line-height:1.4; color:var(--ash); margin:14px 0 26px;
+}
+.tost blockquote em{color:var(--ember); font-style:italic}
+.tost .az{color:var(--gold); font-weight:600}
+.tost cite{font-family:var(--mono); font-style:normal; font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--ashdim)}
+
+/* FINALE */
+.finale{min-height:96svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden}
+.finale h2{
+  font-family:var(--serif); font-weight:600; font-style:italic;
+  font-size:clamp(38px,9.5vw,118px); line-height:1; color:#fff;
+  background:linear-gradient(180deg,#ffe7c2, var(--ember) 55%, var(--nar));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 6px 36px rgba(255,106,43,.5));
+}
+.finale .ru{font-family:var(--serif); font-style:italic; font-size:clamp(18px,4vw,28px); color:var(--gold); margin-top:14px}
+.finale .age-line{font-size:clamp(16px,2.6vw,22px); color:var(--ash); margin-top:clamp(22px,4vh,40px); max-width:30ch}
+.finale .age-line b{color:var(--ember); font-weight:700; font-family:var(--serif); font-style:italic; font-size:1.25em}
+.pom{
+  margin-top:clamp(26px,5vh,46px);
+  font-size:clamp(48px,11vw,96px); line-height:1; cursor:pointer; user-select:none;
+  filter:drop-shadow(0 8px 30px rgba(179,18,46,.6));
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.pom:hover{transform:scale(1.08) rotate(-4deg)}
+.pom:active{transform:scale(.94)}
+.pom-hint{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ashdim); margin-top:14px}
+#confetti{position:absolute; inset:0; z-index:3; pointer-events:none}
+
+/* FOOTER */
+footer{
+  position:relative; z-index:2; text-align:center;
+  padding:clamp(48px,8vh,90px) 20px clamp(40px,6vh,70px);
+  border-top:1px solid rgba(212,175,55,.16);
+}
+footer .sig{font-family:var(--serif); font-style:italic; font-size:clamp(18px,3vw,24px); color:var(--gold)}
+footer .meta{font-family:var(--mono); font-size:12px; letter-spacing:.16em; color:var(--ashdim); margin-top:14px; line-height:1.9}
+footer .meta span{color:var(--ember)}
+
+/* reveal (GSAP target; fallback opacity:1 set by JS if no gsap) */
+.reveal{opacity:1}
+
+/* responsive */
+@media (max-width:760px){
+  .nar-grid,.bb-grid{grid-template-columns:1fr}
+  .nar-art{order:-1; min-height:220px}
+  .element{grid-template-columns:1fr; text-align:left; gap:6px}
+  .element .num{font-size:clamp(56px,20vw,90px)}
+}
+@media (max-width:540px){
+  section{padding:clamp(52px,9vh,90px) 0}
+  .hero h1{filter:drop-shadow(0 4px 18px rgba(255,106,43,.45))}
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .scroll-hint .arrow{animation:none}
+  .seed{animation:none}
+  .pom{transition:none}
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important}
+}
+</style>
+</head>
+<body>
+
+<a class="nav-back" href="../" aria-label="Назад в меню">← меню</a>
+<span class="nav-flag" aria-hidden="true">🔥 Odlar Yurdu</span>
+<div id="cursor" aria-hidden="true"></div>
+
+<canvas id="ember" aria-hidden="true"></canvas>
+
+<main>
+
+  <!-- 1. HERO -->
+  <header class="hero">
+    <div class="eyebrow">Ad günün mübarək · <span id="heroDate">2026</span></div>
+    <h1 id="heroName">ANAR</h1>
+    <p class="sub"><b>Odlar Yurdu</b> · рождённый в Земле Огня</p>
+    <div class="scroll-hint">
+      <span>листай к огню</span>
+      <span class="arrow">↓</span>
+    </div>
+  </header>
+
+  <!-- 2. ANAR ≈ NAR -->
+  <section>
+    <div class="wrap">
+      <div class="nar-grid">
+        <div class="reveal">
+          <span class="kicker">ANAR ≈ NAR</span>
+          <h2 class="h2">Имя, в котором <em>горит гранат</em></h2>
+          <p class="lead">На азербайджанском <em>nar</em> — это гранат. Сердце страны, символ изобилия, тепла и огня жизни. А тебя зовут <b>Anar</b>. В Земле Огня такие совпадения не случайны.</p>
+        </div>
+        <div class="nar-art reveal">
+          <svg class="nar-svg" viewBox="0 0 200 230" role="img" aria-label="Раскрытый гранат с зёрнами">
+            <defs>
+              <radialGradient id="narSkin" cx="50%" cy="42%" r="62%">
+                <stop offset="0%" stop-color="#e23a52"/>
+                <stop offset="60%" stop-color="#b3122e"/>
+                <stop offset="100%" stop-color="#6e0a1d"/>
+              </radialGradient>
+            </defs>
+            <path d="M100 30 C150 30 178 78 178 128 C178 188 142 218 100 218 C58 218 22 188 22 128 C22 78 50 30 100 30 Z" fill="url(#narSkin)" stroke="#7a0c1f" stroke-width="2"/>
+            <path d="M100 8 C104 18 112 24 122 26 C112 30 104 36 100 46 C96 36 88 30 78 26 C88 24 96 18 100 8 Z" fill="#0f5e54" stroke="#0b463e" stroke-width="1.5"/>
+            <path d="M52 70 C70 92 130 92 148 70" fill="none" stroke="#7a0c1f" stroke-width="2" opacity=".6"/>
+            <g fill="#ff5a6e">
+              <circle class="seed" cx="78" cy="120" r="8"/>
+              <circle class="seed" cx="100" cy="112" r="9"/>
+              <circle class="seed" cx="122" cy="120" r="8"/>
+              <circle class="seed" cx="66" cy="142" r="7"/>
+              <circle class="seed" cx="90" cy="138" r="8"/>
+              <circle class="seed" cx="112" cy="138" r="8"/>
+              <circle class="seed" cx="134" cy="142" r="7"/>
+              <circle class="seed" cx="80" cy="162" r="8"/>
+              <circle class="seed" cx="102" cy="160" r="9"/>
+              <circle class="seed" cx="124" cy="162" r="8"/>
+              <circle class="seed" cx="92" cy="184" r="7"/>
+              <circle class="seed" cx="112" cy="184" r="7"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. BUTA -->
+  <section>
+    <div class="wrap">
+      <div class="buta-wrap reveal">
+        <span class="kicker">Buta · бута</span>
+        <h2 class="h2" style="text-align:center">Капля огня <em>на коврах Баку</em></h2>
+        <p class="lead" style="text-align:center; margin:0 auto">Видел узор на коврах и стаканах Баку — каплю-миндаль? Это <em>бута</em>. Стилизованное пламя — символ священного огня и вечной жизни. Сегодня этот огонь — про тебя.</p>
+        <svg class="buta-svg" viewBox="0 0 200 280" role="img" aria-label="Орнамент бута, рисуется линией">
+          <path class="buta-fill" d="M100 20 C40 60 30 140 70 200 C95 238 130 246 130 210 C130 184 104 184 104 156 C104 120 168 120 168 64 C168 30 138 0 100 20 Z"/>
+          <path id="butaOuter" class="buta-path" d="M100 20 C40 60 30 140 70 200 C95 238 130 246 130 210 C130 184 104 184 104 156 C104 120 168 120 168 64 C168 30 138 0 100 20 Z"/>
+          <path id="butaInner" class="buta-path" style="stroke-width:1.6;opacity:.8" d="M100 50 C62 78 56 138 86 184 C100 206 116 208 116 190"/>
+          <circle id="butaDot" class="buta-path" style="fill:var(--ember);stroke:none" cx="118" cy="92" r="5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ПЯТЬ СТИХИЙ ОГНЯ -->
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="text-align:center; margin-bottom:clamp(34px,6vh,64px)">
+        <span class="kicker">Beş alov · пять стихий</span>
+        <h2 class="h2">Пять стихий <em>огня</em></h2>
+        <p class="lead" style="margin:0 auto">Всё, что ты любишь, сходится в одно: огонь, дым, ночь и жар. Вот они — по порядку.</p>
+      </div>
+      <div class="elements">
+
+        <article class="element glass reveal">
+          <div class="num">I</div>
+          <div class="body">
+            <div class="el-title"><span class="el-name">Огонь кухни</span> <span class="el-ico">🔥🍳</span></div>
+            <p>Ты готовишь так, что друзья переносят свои планы. Огонь под казаном — твоя настоящая стихия. Плов, мангал, специи: у тебя это не ужин, а ритуал, на который хочется опоздать только чтобы досталась корочка.</p>
+          </div>
+        </article>
+
+        <article class="element glass reveal">
+          <div class="num">II</div>
+          <div class="body">
+            <div class="el-title"><span class="el-name">Дым</span> <span class="el-ico">💨🚬</span></div>
+            <p>Кальян и сигара — твой способ замедлить ночь. Дым поднимается не спеша, как хороший разговор. И чем гуще облако — тем честнее беседа.</p>
+          </div>
+        </article>
+
+        <article class="element glass reveal">
+          <div class="num">III</div>
+          <div class="body">
+            <div class="el-title"><span class="el-name">Огни города</span> <span class="el-ico">🌃</span></div>
+            <p>Ты гуляешь, когда город выключает звук и оставляет только свет. Ночь — это когда мысли наконец идут в твоём темпе.</p>
+          </div>
+        </article>
+
+        <article class="element glass reveal">
+          <div class="num">IV</div>
+          <div class="body">
+            <div class="el-title"><span class="el-name">Жар</span> <span class="el-ico">♨️🧖</span></div>
+            <p>Сауна — твой огонь изнутри. Пар, который перезагружает. Выходишь оттуда новым человеком — ровно до следующей субботы.</p>
+          </div>
+        </article>
+
+        <article class="element glass reveal">
+          <div class="num">V</div>
+          <div class="body">
+            <div class="el-title"><span class="el-name">Тропический огонь</span> <span class="el-ico">🌴🌅</span></div>
+            <p>Бангкок, Бали, Таиланд: закаты цвета углей и ночи, которые не хотят заканчиваться. Азия — твоя вторая Земля Огня.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. BAKU <-> BANGKOK -->
+  <section>
+    <div class="wrap">
+      <div class="reveal" style="text-align:center">
+        <span class="kicker">Bakı ↔ Bangkok</span>
+        <h2 class="h2"><em>От Каспия</em> до Андаманского моря</h2>
+      </div>
+      <svg class="bridge-svg reveal" viewBox="0 0 1000 240" role="img" aria-label="Силуэт Flame Towers Баку переходит в пальмы и храм Бангкока">
+        <rect class="glow" x="0" y="170" width="1000" height="70"/>
+        <!-- Flame Towers -->
+        <path class="sk" d="M120 230 C124 150 150 60 168 40 C186 60 196 150 196 230"/>
+        <path class="sk" d="M196 230 C200 140 222 70 240 52 C258 70 272 150 272 230"/>
+        <path class="sk" d="M270 230 C276 160 296 96 312 80 C328 96 344 170 348 230"/>
+        <!-- caspian line -->
+        <path class="sk" d="M0 200 Q120 210 240 200" opacity=".5"/>
+        <!-- transition dunes -->
+        <path class="sk" d="M380 230 Q470 196 560 230" opacity=".5"/>
+        <!-- palms + temple Bangkok -->
+        <path class="sk" d="M640 230 L640 150 M640 150 C616 138 600 150 596 162 M640 150 C664 138 684 150 688 164 M640 152 C628 134 632 116 644 108 M640 152 C654 134 654 114 644 106"/>
+        <path class="sk" d="M740 230 L740 160 M740 160 C720 150 706 160 702 172 M740 160 C760 150 776 162 780 174"/>
+        <path class="sk" d="M840 230 L820 180 L860 180 Z M840 178 L840 152 M840 152 L828 160 M840 152 L852 160 M832 152 L848 152 M840 138 L840 152"/>
+        <path class="sk" d="M880 230 L880 168 C862 158 850 168 846 180 M880 168 C898 158 912 170 916 182"/>
+      </svg>
+      <div class="bb-grid">
+        <div class="portrait reveal" id="portraitBox">
+          <img src="../assets/anar.jpg" alt="Анар" loading="lazy"
+               onerror="this.closest('.portrait').classList.add('is-broken')">
+          <div class="fallback">🔥</div>
+        </div>
+        <div class="reveal">
+          <p class="lead">От Каспия до Андаманского моря — ты дома везде, где есть <b>огонь</b>, <b>дым</b> и хорошая компания. Баку научил тебя теплу. Бангкок — что у ночи не бывает последнего автобуса. А казан и хороший разговор работают на любой широте.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ТОСТ (tamada) -->
+  <section>
+    <div class="wrap">
+      <div class="tost glass reveal">
+        <span class="mark">“</span>
+        <blockquote>По-азербайджански говорят: <span class="az">„Çox yaşa!“</span> — живи долго. Я добавлю от себя: <em>гори, но не сгорай</em>. Пусть твой огонь греет всех вокруг — и не гаснет никогда.</blockquote>
+        <cite>— Юра · твой tamada на сегодня</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. ФИНАЛ -->
+  <section class="finale" id="finale">
+    <canvas id="confetti" aria-hidden="true"></canvas>
+    <div class="reveal" style="position:relative; z-index:4">
+      <h2>Ad günün mübarək, Анар!</h2>
+      <p class="ru">— С днём рождения! —</p>
+      <p class="age-line"><b id="ageNum">30</b> — и пусть это только разгар огня.</p>
+      <div class="pom" id="pom" title="нажми" role="button" tabindex="0" aria-label="Раздуть огонь">🔥</div>
+      <p class="pom-hint">раздуй огонь</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p class="sig">Çox yaşa, Анар!</p>
+  <p class="meta">
+    сделано Юрой · для Анара · <span id="footDate">2026</span><br>
+    Odlar Yurdu · 2026 · <span>Nuş olsun!</span>
+  </p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  /* ===== PROFILE token (единственный источник возраста/даты) ===== */
+  const PROFILE = { name: 'Анар', age: '30', date: '2026' };
+
+  // прокинуть в текст
+  var ageEl = document.getElementById('ageNum');
+  if (ageEl) ageEl.textContent = PROFILE.age;
+  var dateEl = document.getElementById('footDate');
+  if (dateEl) dateEl.textContent = PROFILE.date;
+  var heroDateEl = document.getElementById('heroDate');
+  if (heroDateEl) heroDateEl.textContent = PROFILE.date;
+
+  var reduced = false;
+  try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+
+  /* ===== console-greeting ===== */
+  try{
+    console.log(
+      '%c🔥 Ad günün mübarək, ' + PROFILE.name + '! 🔥%c\nOdlar Yurdu · Земля Огня\nÇox yaşa! — живи долго.\n— сделано Юрой, для Анара',
+      'font-size:20px;font-weight:700;color:#ff6a2b;text-shadow:0 0 8px rgba(255,106,43,.6);',
+      'font-size:13px;color:#d4af37;'
+    );
+  }catch(e){}
+
+  /* ===== ember canvas — частицы-угли летят ВВЕРХ ===== */
+  (function ember(){
+    var cv = document.getElementById('ember');
+    if(!cv) return;
+    var ctx = cv.getContext('2d');
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var W=0, H=0, parts=[], raf=null;
+    var COLORS = ['#ff6a2b','#d4af37','#b3122e','#ffae5e'];
+
+    function resize(){
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+      cv.style.width = W+'px'; cv.style.height = H+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+    }
+    function mk(){
+      return {
+        x: Math.random()*W,
+        y: H + Math.random()*60,
+        r: 0.8 + Math.random()*2.4,
+        vy: -(14 + Math.random()*42),
+        vx: (Math.random()-0.5)*16,
+        drift: Math.random()*6.28,
+        life: 0, max: 4 + Math.random()*5,
+        col: COLORS[(Math.random()*COLORS.length)|0]
+      };
+    }
+    var COUNT = reduced ? 26 : (window.innerWidth < 600 ? 55 : 110);
+    function init(){ parts=[]; for(var i=0;i<COUNT;i++){ var p=mk(); p.y=Math.random()*H; p.life=Math.random()*p.max; parts.push(p);} }
+
+    var lastT = 0;
+    function frame(t){
+      raf = requestAnimationFrame(frame);
+      if (document.hidden) return;
+      var dt = Math.min(0.05,(t-lastT)/1000)||0; lastT=t;
+      ctx.clearRect(0,0,W,H);
+      ctx.globalCompositeOperation = 'lighter';
+      for(var i=0;i<parts.length;i++){
+        var p = parts[i];
+        p.life += dt;
+        p.drift += dt*1.6;
+        p.y += p.vy*dt;
+        p.x += (p.vx + Math.sin(p.drift)*10)*dt;
+        if(p.life>p.max || p.y < -20){ parts[i] = mk(); continue; }
+        var k = 1 - (p.life/p.max);
+        ctx.beginPath();
+        ctx.fillStyle = p.col;
+        ctx.globalAlpha = Math.max(0, k*0.9);
+        ctx.shadowColor = p.col; ctx.shadowBlur = 8;
+        ctx.arc(p.x, p.y, p.r*(0.6+k*0.7), 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    resize(); init();
+    window.addEventListener('resize', function(){ resize(); init(); });
+    if(reduced){
+      // статичный кадр: один проход без анимации
+      ctx.globalCompositeOperation='lighter';
+      for(var i=0;i<parts.length;i++){var p=parts[i];ctx.beginPath();ctx.fillStyle=p.col;ctx.globalAlpha=.5;ctx.arc(p.x,p.y,p.r,0,6.2832);ctx.fill();}
+      ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden && !reduced){ lastT = performance.now(); }
+    });
+  })();
+
+  /* ===== ember cursor (desktop fine pointer only) ===== */
+  (function cursor(){
+    if (!window.matchMedia || !window.matchMedia('(min-width:721px) and (pointer:fine)').matches) return;
+    var c = document.getElementById('cursor');
+    if(!c) return;
+    var x=window.innerWidth/2, y=window.innerHeight/2, tx=x, ty=y;
+    window.addEventListener('pointermove', function(e){ tx=e.clientX; ty=e.clientY; }, {passive:true});
+    window.addEventListener('pointerdown', function(){ c.classList.add('tap'); });
+    window.addEventListener('pointerup', function(){ c.classList.remove('tap'); });
+    (function tick(){
+      x += (tx-x)*0.28; y += (ty-y)*0.28;
+      c.style.transform = 'translate('+x+'px,'+y+'px)';
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  /* ===== GSAP scroll-reveal + buta draw + hero parallax (with fallback) ===== */
+  function noGsapFallback(){
+    var els = document.querySelectorAll('.reveal');
+    for(var i=0;i<els.length;i++){ els[i].style.opacity = '1'; els[i].style.transform='none'; }
+    // buta полностью видна
+    drawButaInstant();
+  }
+  function drawButaInstant(){
+    ['butaOuter','butaInner'].forEach(function(id){
+      var p = document.getElementById(id);
+      if(p && p.getTotalLength){ p.style.strokeDasharray='none'; p.style.strokeDashoffset='0'; }
+    });
+  }
+
+  if (window.gsap && window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!reduced){
+      // reveal
+      gsap.utils.toArray('.reveal').forEach(function(el){
+        gsap.fromTo(el,
+          { opacity:0, y:42 },
+          { opacity:1, y:0, duration:1, ease:'power3.out',
+            scrollTrigger:{ trigger:el, start:'top 82%', toggleActions:'play none none reverse' } });
+      });
+
+      // hero parallax
+      var heroName = document.getElementById('heroName');
+      if(heroName){
+        gsap.to(heroName, { yPercent:24, ease:'none',
+          scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:true } });
+      }
+
+      // buta draws on scroll
+      ['butaOuter','butaInner'].forEach(function(id){
+        var p = document.getElementById(id);
+        if(!p || !p.getTotalLength) return;
+        var len = p.getTotalLength();
+        p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+        gsap.to(p, { strokeDashoffset:0, ease:'none',
+          scrollTrigger:{ trigger:p.closest('section'), start:'top 75%', end:'bottom 60%', scrub:0.6 } });
+      });
+      var dot = document.getElementById('butaDot');
+      if(dot){ dot.style.opacity='0';
+        gsap.to(dot,{opacity:1,duration:.4,
+          scrollTrigger:{trigger:dot.closest('section'),start:'top 40%',toggleActions:'play none none reverse'}}); }
+
+    } else {
+      noGsapFallback();
+    }
+  } else {
+    noGsapFallback();
+  }
+
+  /* ===== гранатовое конфетти (canvas) на финале ===== */
+  var confettiFired = false;
+  (function pomConfetti(){
+    var cv = document.getElementById('confetti');
+    var pom = document.getElementById('pom');
+    var finale = document.getElementById('finale');
+    if(!cv || !pom) return;
+    var ctx = cv.getContext('2d');
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var W=0,H=0, bits=[], raf=null;
+    var COLS = ['#b3122e','#d4af37','#ff6a2b','#ff5a6e','#ffae5e'];
+
+    function size(){
+      var r = finale.getBoundingClientRect();
+      W=r.width; H=r.height;
+      cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+      cv.style.width=W+'px'; cv.style.height=H+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+    }
+    function burst(n){
+      size();
+      var cx = W*0.5, cy = H*0.42;
+      for(var i=0;i<n;i++){
+        var a = Math.random()*6.2832, sp = 120 + Math.random()*380;
+        bits.push({
+          x:cx, y:cy,
+          vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 120,
+          size:4+Math.random()*7, life:1.4+Math.random()*1.6,
+          rot:Math.random()*6.28, vr:(Math.random()-0.5)*12,
+          col:COLS[(Math.random()*COLS.length)|0], round:Math.random()<0.5
+        });
+      }
+      if(!raf) raf = requestAnimationFrame(loop);
+    }
+    function loop(t){
+      raf = requestAnimationFrame(loop);
+      ctx.clearRect(0,0,W,H);
+      var alive=false;
+      for(var i=0;i<bits.length;i++){
+        var b=bits[i]; if(b.life<=0) continue; alive=true;
+        b.vy += 720*0.016; b.x += b.vx*0.016; b.y += b.vy*0.016;
+        b.rot += b.vr*0.016; b.life -= 0.016;
+        ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.rot);
+        ctx.globalAlpha = Math.max(0, Math.min(1,b.life));
+        ctx.fillStyle = b.col;
+        if(b.round){ ctx.beginPath(); ctx.arc(0,0,b.size*0.6,0,6.2832); ctx.fill(); }
+        else ctx.fillRect(-b.size/2,-b.size/2,b.size,b.size);
+        ctx.restore();
+      }
+      if(!alive){ cancelAnimationFrame(raf); raf=null; ctx.clearRect(0,0,W,H); }
+    }
+
+    function fire(){ burst(reduced ? 50 : 130); }
+
+    // авто при достижении финала
+    if (window.gsap && window.ScrollTrigger){
+      ScrollTrigger.create({ trigger:finale, start:'top 60%', once:true,
+        onEnter:function(){ if(!confettiFired){ confettiFired=true; pom.textContent='🎉'; fire(); } } });
+    }
+    // клик по огню — всегда ещё конфетти
+    function poke(){ pom.textContent = (pom.textContent==='🔥') ? '🎉' : '🔥'; fire(); }
+    pom.addEventListener('click', poke);
+    pom.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); poke(); } });
+    window.addEventListener('resize', function(){ if(raf) size(); });
+  })();
+
+  /* ===== Konami code → Anar Quest ===== */
+  (function konami(){
+    var seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    var pos = 0;
+    document.addEventListener('keydown', function(e){
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === seq[pos]){
+        pos++;
+        if (pos === seq.length){ pos=0; if(window.AnarQuest) AnarQuest.open(); }
+      } else {
+        pos = (k === seq[0]) ? 1 : 0;
+      }
+    });
+  })();
+
+  /* =====================================================================
+     ANAR QUEST — self-contained mini-game (inlined from _build/anar-quest.js)
+     ===================================================================== */
+  window.AnarQuest = (function () {
+    'use strict';
+
+    var theme = null;
+    var root, btn, canvas, ctx;
+    var W = 0, H = 0, DPR = 1;
+    var raf = null, last = 0;
+    var state = 'ready'; // 'ready' | 'playing' | 'win'
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    // world
+    var groundY, playerSize, baseSpeed, speed, distance, goalDist;
+    var player, entities, confetti, score, shake, stumble, goalSpawned, goalEnt;
+    var spawnObstacleAt, spawnCollectAt;
+
+    function injectStyles() {
+      if (document.getElementById('aq-style')) return;
+      var s = document.createElement('style');
+      s.id = 'aq-style';
+      s.textContent =
+        '.aq-overlay{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;background:rgba(4,4,8,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}' +
+        '.aq-overlay.aq-open{display:flex;}' +
+        '.aq-stage{position:relative;width:min(960px,96vw);height:min(560px,82vh);border-radius:16px;overflow:hidden;box-shadow:0 30px 90px -20px rgba(0,0,0,.8);}' +
+        '.aq-stage canvas{display:block;width:100%;height:100%;touch-action:none;}' +
+        '.aq-close{position:absolute;top:10px;right:12px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#fff;font:600 20px/40px system-ui,sans-serif;text-align:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;}' +
+        '.aq-close:hover{background:rgba(0,0,0,.7);}' +
+        '.aq-fab{position:fixed;right:18px;bottom:18px;z-index:1000;width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;font-size:24px;line-height:54px;text-align:center;color:#0a0a0a;box-shadow:0 8px 24px -6px rgba(0,0,0,.6);transition:transform .25s ease, box-shadow .25s ease;-webkit-tap-highlight-color:transparent;padding:0;}' +
+        '.aq-fab:hover{transform:translateY(-3px) rotate(-8deg);}' +
+        '@media (max-width:520px){.aq-fab{width:48px;height:48px;font-size:21px;line-height:48px;right:14px;bottom:14px;}}';
+      document.head.appendChild(s);
+    }
+
+    function buildDom() {
+      root = document.createElement('div');
+      root.className = 'aq-overlay';
+      root.setAttribute('aria-hidden', 'true');
+      var stage = document.createElement('div');
+      stage.className = 'aq-stage';
+      canvas = document.createElement('canvas');
+      var close = document.createElement('button');
+      close.className = 'aq-close';
+      close.innerHTML = '&times;';
+      close.setAttribute('aria-label', 'Закрыть игру');
+      close.addEventListener('click', api.close);
+      stage.appendChild(canvas);
+      stage.appendChild(close);
+      root.appendChild(stage);
+      root.addEventListener('click', function (e) { if (e.target === root) api.close(); });
+      document.body.appendChild(root);
+      ctx = canvas.getContext('2d');
+
+      btn = document.createElement('button');
+      btn.className = 'aq-fab';
+      btn.textContent = '🎮';
+      btn.title = 'Anar Quest';
+      btn.setAttribute('aria-label', 'Открыть мини-игру Anar Quest');
+      btn.style.background = theme.accent || '#ffce00';
+      btn.addEventListener('click', api.open);
+      document.body.appendChild(btn);
+    }
+
+    function resize() {
+      var stage = canvas.parentElement;
+      var r = stage.getBoundingClientRect();
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = Math.max(320, r.width);
+      H = Math.max(240, r.height);
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      groundY = H * 0.82;
+      playerSize = Math.max(34, Math.min(64, H * 0.11));
+      baseSpeed = Math.max(260, W * 0.42); // px/sec
+      if (player) player.y = Math.min(player.y, groundY);
+    }
+
+    function reset() {
+      score = 0;
+      distance = 0;
+      goalDist = 8200;
+      speed = baseSpeed;
+      shake = 0;
+      stumble = 0;
+      goalSpawned = false;
+      goalEnt = null;
+      entities = [];
+      confetti = [];
+      player = { x: W * 0.2, y: groundY, vy: 0, size: playerSize, onGround: true, bob: 0 };
+      spawnObstacleAt = 900;
+      spawnCollectAt = 480;
+    }
+
+    function jump() {
+      if (state === 'ready') { state = 'playing'; return; }
+      if (state === 'win') { restart(); return; }
+      if (player.onGround) {
+        player.vy = -Math.sqrt(2 * 2600 * (groundY * 0.42)); // reach ~42% of ground height
+        player.onGround = false;
+      }
+    }
+
+    function restart() { reset(); state = 'playing'; }
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+
+    function spawn() {
+      if (goalSpawned) return;
+      if (distance >= spawnCollectAt) {
+        spawnCollectAt = distance + rnd(520, 980);
+        var high = Math.random() < 0.5;
+        entities.push({
+          type: 'coin', x: W + 40,
+          y: high ? groundY - playerSize * rnd(1.4, 2.2) : groundY - playerSize * 0.5,
+          size: playerSize * 0.8,
+          emoji: theme.collectibles[(Math.random() * theme.collectibles.length) | 0],
+          dead: false
+        });
+      }
+      if (distance >= spawnObstacleAt) {
+        spawnObstacleAt = distance + rnd(1100, 1900);
+        entities.push({
+          type: 'rock', x: W + 40, y: groundY,
+          size: playerSize * rnd(0.7, 0.95),
+          emoji: theme.obstacle, hit: false
+        });
+      }
+    }
+
+    function overlap(ax, ay, ar, bx, by, br) {
+      var dx = ax - bx, dy = ay - by, rr = ar + br;
+      return dx * dx + dy * dy < rr * rr;
+    }
+
+    function update(dt) {
+      // speed ramps a touch over the run
+      speed = baseSpeed * (1 + Math.min(distance / goalDist, 1) * 0.45);
+      var eff = stumble > 0 ? speed * 0.45 : speed;
+      if (stumble > 0) stumble -= dt;
+      distance += eff * dt;
+
+      // player physics
+      player.vy += 2600 * dt;
+      player.y += player.vy * dt;
+      if (player.y >= groundY) { player.y = groundY; player.vy = 0; player.onGround = true; }
+      player.bob += dt * (player.onGround ? 12 : 0);
+
+      spawn();
+
+      // goal
+      if (!goalSpawned && distance >= goalDist) {
+        goalSpawned = true;
+        goalEnt = { type: 'goal', x: W + 60, y: groundY, size: playerSize * 1.5, emoji: theme.goal };
+        entities.push(goalEnt);
+      }
+
+      var pr = player.size * 0.42;
+      for (var i = entities.length - 1; i >= 0; i--) {
+        var e = entities[i];
+        e.x -= eff * dt;
+        var er = e.size * 0.40;
+        if (!e.dead && overlap(player.x, player.y - player.size * 0.4, pr, e.x, e.y - e.size * 0.4, er)) {
+          if (e.type === 'coin') { e.dead = true; score += 10; popConfetti(e.x, e.y, 8); }
+          else if (e.type === 'rock' && !e.hit) { e.hit = true; stumble = 0.35; shake = 8; }
+          else if (e.type === 'goal') { win(); }
+        }
+        if (e.x < -80) entities.splice(i, 1);
+      }
+
+      if (shake > 0) shake -= dt * 40;
+
+      // confetti
+      for (var c = confetti.length - 1; c >= 0; c--) {
+        var p = confetti[c];
+        p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+        if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+      }
+    }
+
+    function popConfetti(x, y, n) {
+      var cols = [theme.accent, theme.accent2, '#ffffff', '#ffd166'];
+      for (var i = 0; i < n; i++) {
+        confetti.push({
+          x: x, y: y, vx: rnd(-160, 160), vy: rnd(-260, -40),
+          size: rnd(5, 10), life: rnd(0.8, 1.6), rot: rnd(0, 6.28), vr: rnd(-8, 8),
+          col: cols[(Math.random() * cols.length) | 0]
+        });
+      }
+    }
+
+    function win() {
+      if (state === 'win') return;
+      state = 'win';
+      for (var i = 0; i < 70; i++) popConfetti(rnd(0, W), rnd(-20, H * 0.3), 1);
+    }
+
+    function drawBg() {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, theme.sky || theme.bg1);
+      g.addColorStop(1, theme.bg2 || theme.bg1);
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      // distant glow
+      if (!reduced) {
+        var gx = (1 - (distance % 4000) / 4000) * W;
+        var rg = ctx.createRadialGradient(gx, H * 0.4, 0, gx, H * 0.4, H * 0.6);
+        rg.addColorStop(0, hexA(theme.accent, 0.16));
+        rg.addColorStop(1, hexA(theme.accent, 0));
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+      }
+      // ground
+      ctx.fillStyle = theme.ground || '#111';
+      ctx.fillRect(0, groundY + player.size * 0.1, W, H - groundY);
+      // ground speed stripes
+      ctx.fillStyle = hexA(theme.accent, 0.18);
+      var stripeW = 46, off = (distance % stripeW);
+      for (var x = -off; x < W; x += stripeW) ctx.fillRect(x, groundY + player.size * 0.1, 22, 4);
+    }
+
+    function emoji(ch, x, y, size) {
+      ctx.font = size + 'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(ch, x, y);
+    }
+
+    function draw() {
+      var sx = shake > 0 ? rnd(-shake, shake) : 0;
+      ctx.save();
+      ctx.translate(sx, 0);
+      drawBg();
+      // entities
+      for (var i = 0; i < entities.length; i++) {
+        var e = entities[i];
+        if (e.dead) continue;
+        var by = e.type === 'coin' && !reduced ? Math.sin(distance / 220 + e.x) * 4 : 0;
+        emoji(e.emoji, e.x, e.y - e.size * 0.4 + by, e.size);
+      }
+      // player
+      ctx.save();
+      ctx.translate(player.x, player.y - player.size * 0.4);
+      ctx.rotate(Math.sin(player.bob) * (player.onGround ? 0.06 : 0) + (player.onGround ? 0 : 0.12));
+      emoji(theme.player, 0, 0, player.size);
+      ctx.restore();
+      // HUD
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '600 16px system-ui,sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('★ ' + score, 16, 14);
+      // progress bar
+      var pw = W - 32, pp = Math.min(distance / goalDist, 1);
+      ctx.fillStyle = hexA('#ffffff', 0.15); ctx.fillRect(16, 40, pw, 6);
+      ctx.fillStyle = theme.accent || '#fff'; ctx.fillRect(16, 40, pw * pp, 6);
+      emoji('🎂', 16 + pw, 43, 18);
+      // confetti
+      for (var c = 0; c < confetti.length; c++) {
+        var p = confetti[c];
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
+      }
+      ctx.restore();
+
+      if (state === 'ready') overlayText(theme.title || 'ANAR QUEST',
+        'Тап / Space — прыжок. Доберись до торта 🎂', '▶ тап, чтобы начать');
+      if (state === 'win') overlayText('Ad günün mübarək, Анар! 🎉',
+        'Очки: ' + score + ' · Çox yaşa!', 'тап — сыграть ещё раз');
+    }
+
+    function overlayText(title, sub, hint) {
+      ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(0, 0, W, H);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = theme.accent || '#fff';
+      ctx.font = '700 ' + Math.round(Math.min(34, W * 0.06)) + 'px system-ui,sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(title, W / 2, H * 0.4);
+      ctx.fillStyle = '#fff';
+      ctx.font = '500 ' + Math.round(Math.min(18, W * 0.034)) + 'px system-ui,sans-serif';
+      ctx.fillText(sub, W / 2, H * 0.4 + 38);
+      ctx.fillStyle = hexA('#ffffff', 0.7);
+      ctx.font = '500 14px system-ui,sans-serif';
+      ctx.fillText(hint, W / 2, H * 0.4 + 72);
+    }
+
+    function loop(t) {
+      raf = requestAnimationFrame(loop);
+      var dt = Math.min(0.05, (t - last) / 1000) || 0; last = t;
+      if (state === 'playing') update(dt);
+      else {
+        // idle: keep confetti + slow drift alive
+        for (var c = confetti.length - 1; c >= 0; c--) {
+          var p = confetti[c]; p.vy += 600 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; p.rot += p.vr * dt;
+          if (p.life <= 0 || p.y > H + 40) confetti.splice(c, 1);
+        }
+      }
+      draw();
+    }
+
+    function hexA(hex, a) {
+      if (!hex) return 'rgba(255,255,255,' + a + ')';
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      var n = parseInt(hex, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+
+    // input
+    function onKey(e) {
+      if (!root.classList.contains('aq-open')) return;
+      if (e.key === 'Escape') { api.close(); return; }
+      if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'Spacebar') { e.preventDefault(); jump(); }
+    }
+
+    var api = {
+      init: function (t) {
+        theme = t || {};
+        if (!theme.collectibles || !theme.collectibles.length) theme.collectibles = ['⭐'];
+        injectStyles();
+        buildDom();
+        resize();
+        reset();
+        window.addEventListener('resize', function () { if (root.classList.contains('aq-open')) resize(); });
+        document.addEventListener('keydown', onKey);
+        canvas.addEventListener('pointerdown', function (e) { e.preventDefault(); jump(); });
+        return api;
+      },
+      open: function () {
+        if (!root) return;
+        root.classList.add('aq-open');
+        root.setAttribute('aria-hidden', 'false');
+        resize(); reset(); state = 'ready';
+        last = performance.now();
+        if (!raf) raf = requestAnimationFrame(loop);
+      },
+      close: function () {
+        if (!root) return;
+        root.classList.remove('aq-open');
+        root.setAttribute('aria-hidden', 'true');
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+      }
+    };
+    return api;
+  })();
+
+  /* ===== init Anar Quest with Odlar Yurdu theme ===== */
+  AnarQuest.init({ id:'odlar', title:'ANAR QUEST · Odlar Yurdu', bg1:'#1a0a05', bg2:'#3a1505', ground:'#1a0f0a', sky:'#2a0f08', accent:'#ff6a2b', accent2:'#d4af37', player:'🧔', collectibles:['🌶️','🍷','🔥','🍲'], obstacle:'🪨', goal:'🎂' });
+
+})();
+</script>
+</body>
+</html>
